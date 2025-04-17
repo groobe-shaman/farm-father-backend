@@ -1,0 +1,322 @@
+[
+  {
+    "structure": "banner",
+    "data": [
+      {
+        "thumbnail_image": "image1",
+        "banner_image": "image1",
+        "product_color": "color1"
+      },
+      {
+        "thumbnail_image": "image2",
+        "banner_image": "image2",
+        "product_color": "color2"
+      }
+    ],
+    "title": "",
+    "description": ""
+  },
+  {
+    "structure": "essence",
+    "data": [
+      {
+        "image": "image1",
+        "title": "title",
+        "title_color": "title_color",
+        "description": "description"
+      },
+      {
+        "image": "image1",
+        "title": "title",
+        "title_color": "title_color",
+        "description": "description"
+      },
+      {
+        "image": "image1",
+        "title": "title",
+        "title_color": "title_color",
+        "description": "description"
+      },
+      {
+        "image": "image1",
+        "title": "title",
+        "title_color": "title_color",
+        "description": "description"
+      }
+    ],
+    "section_title": ""
+  },
+  {
+    "structure": "products",
+    "data": [
+      {
+        "title": "title",
+        "description": "description",
+        "highlight_media": "media",
+        "text_color": "color"
+      },
+      {
+        "title": "title",
+        "description": "description",
+        "highlight_media": "media",
+        "text_color": "color"
+      }
+    ],
+    "section_title": ""
+  },
+  {
+    "structure": "product_made_for",
+    "data": [
+      {
+        "title": "title",
+        "title_color": "title_color",
+        "description": "description",
+        "image": "image"
+      },
+      {
+        "title": "title",
+        "title_color": "title_color",
+        "description": "description",
+        "image": "image"
+      },
+      {
+        "title": "title",
+        "title_color": "title_color",
+        "description": "description",
+        "image": "image"
+      }
+    ],
+    "section_title": ""
+  },
+  {
+    "structure": "how_to_use",
+    "data": [
+      {
+        "title": "title",
+        "sub_title": "empty",
+        "description": "empty",
+        "image": "image"
+      },
+      {
+        "title": "title",
+        "sub_title": "empty",
+        "description": "empty",
+        "image": "image"
+      },
+      {
+        "title": "title",
+        "sub_title": "empty",
+        "description": "empty",
+        "image": "image"
+      },
+      {
+        "title": "title",
+        "sub_title": "empty",
+        "description": "empty",
+        "image": "image"
+      },
+      {
+        "title": "title",
+        "sub_title": "sub_title",
+        "description": "description",
+        "image": "image"
+      },
+      {
+        "title": "title",
+        "sub_title": "empty",
+        "description": "description",
+        "image": "image"
+      }
+    ],
+    "section_title": ""
+  },
+  {
+    "structure": "benefits",
+    "image": "image",
+    "section_title": ""
+  },
+  {
+    "structure": "why_choose_us",
+    "feature_titles": ["title", "title", "title"],
+    "feature_title_color": "title_color",
+    "description": "description",
+    "image": "image",
+    "section_title": ""
+  },
+  {
+    "structure": "our_impact",
+    "data": [
+      {
+        "title": "title",
+        "title_color": "title_color",
+        "description": "description",
+        "description_color": "description_color",
+        "image": "image"
+      },
+      {
+        "title": "title",
+        "title_color": "title_color",
+        "description": "description",
+        "description_color": "description_color",
+        "image": "image"
+      },
+      {
+        "title": "title",
+        "title_color": "title_color",
+        "description": "description",
+        "description_color": "description_color",
+        "image": "image"
+      },
+      {
+        "title": "title",
+        "title_color": "title_color",
+        "description": "description",
+        "description_color": "description_color",
+        "image": "image"
+      }
+    ],
+    "left_big_file": {
+      "file": "file"
+    },
+    "right_big_file": {
+      "file": "file"
+    },
+    "right_small_image": [
+      {
+        "desktop": {
+          "image": "image",
+          "cta_button_name": "name",
+          "cta_button_link": "link",
+          "cta_button_color": "color"
+        },
+        "mobile": {
+          "image": "image",
+          "cta_button_name": "name",
+          "cta_button_link": "link",
+          "cta_button_color": "color"
+        }
+      }
+    ],
+    "left_small_image": [
+      {
+        "desktop": {
+          "image": "image",
+          "cta_button_name": "name",
+          "cta_button_link": "link",
+          "cta_button_color": "color"
+        },
+        "mobile": {
+          "image": "image",
+          "cta_button_name": "name",
+          "cta_button_link": "link",
+          "cta_button_color": "color"
+        }
+      }
+    ],
+    "section_title": ""
+  },
+  {
+    "structure": "about_us",
+    "section_title": "",
+    "image": "image",
+    "description": "description",
+    "social_media_links": [
+      {
+        "cta_button_whatsapp_icon": "icon",
+        "cta_button_whatsapp_link": "link"
+      },
+      {
+        "cta_button_facebook_icon": "icon",
+        "cta_button_facebook_link": "link"
+      },
+      {
+        "cta_button_instagram_icon": "icon",
+        "cta_button_instagram_link": "link"
+      },
+      {
+        "cta_button_linkedid_icon": "icon",
+        "cta_button_linkedin_link": "link"
+      },
+      {
+        "cta_button_pintrest_icon": "icon",
+        "cta_button_pintrest_link": "link"
+      }
+    ]
+  },
+  {
+    "structure": "our_wall_of_love",
+    "data": [
+      {
+        "name": "name",
+        "rating": "rating",
+        "location": "location",
+        "review": "review",
+        "image": "image"
+      },
+      {
+        "name": "name",
+        "rating": "rating",
+        "location": "location",
+        "review": "review",
+        "image": "image"
+      },
+      {
+        "name": "name",
+        "rating": "rating",
+        "location": "location",
+        "review": "review",
+        "image": "image"
+      },
+      {
+        "name": "name",
+        "rating": "rating",
+        "location": "location",
+        "review": "review",
+        "image": "image"
+      },
+      {
+        "name": "name",
+        "rating": "rating",
+        "location": "location",
+        "review": "review",
+        "image": "image"
+      }
+    ],
+    "section_title": ""
+  },
+  {
+    "structure": "contact_us",
+    "images": ["image", "image", "image"],
+    "section_title": ""
+  },
+  {
+    "structure": "settings",
+    "social_media_links": [
+      {
+        "cta_button_whatsapp_icon": "icon",
+        "cta_button_whatsapp_link": "link"
+      },
+      {
+        "cta_button_facebook_icon": "icon",
+        "cta_button_facebook_link": "link"
+      },
+      {
+        "cta_button_instagram_icon": "icon",
+        "cta_button_instagram_link": "link"
+      },
+      {
+        "cta_button_linkedid_icon": "icon",
+        "cta_button_linkedin_link": "link"
+      },
+      {
+        "cta_button_pintrest_icon": "icon",
+        "cta_button_pintrest_link": "link"
+      }
+    ],
+    "company_detials": {
+      "company_mobile_number": "123466",
+      "company_email_id": "email_id",
+      "company_address": "address"
+    }
+  }
+]
