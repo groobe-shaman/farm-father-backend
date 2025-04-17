@@ -18,19 +18,20 @@ const addBannerHomepage = async (req, res) => {
     let homePage = await HomePageDataModel.findOne({
       structure_type: "banner",
     });
-
+    if (homePage) {
+      return res.status(400).json({
+        message: "Cannot add banner structure again, instead update it",
+      });
+    }
     if (!homePage) {
       homePage = new HomePageDataModel({
         structure_type: "banner",
         content: { banner: { data: [], title: "", description: "" } },
       });
     }
-
-    if (homePage) {
-      return res.status(400).json({
-        message: "Cannot add banner structure again, instead update it",
-      });
-    }
+      
+       
+   
     homePage.content.banner = {
       data: transformedData !== undefined ? transformedData : homePage.content.banner.data,
       title: title !== undefined ? title : homePage.content.banner.title,

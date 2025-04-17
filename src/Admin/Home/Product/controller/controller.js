@@ -106,7 +106,7 @@ const addProduct = async (req, res) => {
       const sort_id = req.body.sort_id
         ? parseInt(req.body.sort_id)
         : newSort_id;
-
+        
       const files = req.files || {};
       const mainImage = files.main_image?.[0];
       const bannerImage = files.banner_image?.[0];
@@ -118,7 +118,7 @@ const addProduct = async (req, res) => {
         return res.status(400).json({ message: "Main image is required" });
       }
       if (!bannerImage) {
-        return res.status(400).json({ message: "Main image is required" });
+        return res.status(400).json({ message: "Banner image is required" });
       }
       if (!highlightMedia) {
         return res.status(400).json({ message: "Highlight media is required" });
