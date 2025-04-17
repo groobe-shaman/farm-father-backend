@@ -11,15 +11,16 @@ const {
   productsVisibility,
   getAllHomepageProducts,
 } = require("../controller/controller");
-router.post("/product/", addProduct);
-router.get("/product/", getAllProducts);
-router.delete("/product/", deleteProduct);
+const { verifyAdminToken } = require("../../../Auth/middlewares/verifyAdminToken");
+router.post("/product/",verifyAdminToken,addProduct);
+router.get("/product/",verifyAdminToken,getAllProducts);
+router.delete("/product/",verifyAdminToken,deleteProduct);
 
-router.post("/product/addHomePageProduct", addProductsHomepage);
-router.put("/product/updateHomePageProduct", updateHomepageProducts);
-router.post("/product/updateProductVisibility", productsVisibility);
-router.get("/product/getHomePageProducts", getAllHomepageProducts);
+router.post("/product/addHomePageProduct",verifyAdminToken,addProductsHomepage);
+router.put("/product/updateHomePageProduct",verifyAdminToken, updateHomepageProducts);
+router.post("/product/updateProductVisibility",verifyAdminToken, productsVisibility);
+router.get("/product/getHomePageProducts",verifyAdminToken, getAllHomepageProducts);
 
-router.get("/product/:productId", getProductById);
-router.put("/product/:productId", updateProduct);
+router.get("/product/:productId",verifyAdminToken, getProductById);
+router.put("/product/:productId",verifyAdminToken, updateProduct);
 module.exports = router;

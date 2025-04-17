@@ -1,6 +1,6 @@
 const express=require('express')
 const { getWhyChooseUs } = require('../controller/controller')
-const router=express.ROuter()
+const router=express.Router()
 
 router.get('/',getWhyChooseUs)
 

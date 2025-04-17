@@ -5,10 +5,11 @@ const {
   getAllHomepageBanners,
   bannerVisibility,
 } = require("../controller/controller");
+const { verifyAdminToken } = require("../../../Auth/middlewares/verifyAdminToken");
 const router = express.Router();
 
-router.post("/banner/", addBannerHomepage);
-router.put("/banner/", updateHomepageBanner);
-router.get("/banner/", getAllHomepageBanners);
-router.post("/banner/updateBannerVisibility", bannerVisibility);
+router.post("/banner/",verifyAdminToken, addBannerHomepage);
+router.put("/banner/",verifyAdminToken, updateHomepageBanner);
+router.get("/banner/",verifyAdminToken, getAllHomepageBanners);
+router.post("/banner/updateBannerVisibility",verifyAdminToken,bannerVisibility);
 module.exports = router;
