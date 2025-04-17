@@ -8,8 +8,8 @@ const {
 const { verifyAdminToken } = require("../../../Auth/middlewares/verifyAdminToken");
 const router = express.Router();
 
-router.post("/banner/",verifyAdminToken, addBannerHomepage);
-router.put("/banner/",verifyAdminToken, updateHomepageBanner);
-router.get("/banner/",verifyAdminToken, getAllHomepageBanners);
-router.post("/banner/updateBannerVisibility",verifyAdminToken,bannerVisibility);
+router.post("/home/banner/",verifyAdminToken, addBannerHomepage);
+router.put("/home/banner/",verifyAdminToken, updateHomepageBanner);
+router.get("/home/banner/",verifyAdminToken, getAllHomepageBanners);
+router.post("/home/banner/updateBannerVisibility",verifyAdminToken,bannerVisibility);
 module.exports = router;

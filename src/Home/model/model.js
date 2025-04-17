@@ -4,12 +4,10 @@ const BannerSchema = new mongoose.Schema(
   {
     data: [
       {
-        id:{type:String,required:true},
-        isHidden: { type: Boolean, default: false }
+        id: { type: String, required: true },
+        isHidden: { type: Boolean, default: false },
       },
     ],
-    title: { type: String, default: "" },
-    description: { type: String, default: "" },
   },
   { _id: false }
 );
@@ -33,8 +31,8 @@ const ProductsSchema = new mongoose.Schema(
   {
     data: [
       {
-        id:{type:String,required:true},
-        isHidden: { type: Boolean, default: false }
+        id: { type: String, required: true },
+        isHidden: { type: Boolean, default: false },
       },
     ],
     section_title: { type: String, default: "" },
@@ -86,7 +84,7 @@ const WhyChooseUsSchema = new mongoose.Schema(
     feature_title_color: { type: String, default: "" },
     description: { type: String, default: "" },
     image: { type: String, default: "" },
-    section_title: { type: String, default: "" }
+    section_title: { type: String, default: "" },
   },
   { _id: false }
 );
@@ -189,13 +187,9 @@ const SettingsSchema = new mongoose.Schema(
   {
     social_media_links: [
       {
-        platform: {
-          type: String,
-          enum: ["whatsapp", "facebook", "instagram", "linkedin", "pinterest"],
-          required: true,
-        },
-        icon: { type: String, default: "" },
-        link: { type: String, default: "" },
+        platform: { type: String, required: true }, 
+        icon: { type: String },
+        link: { type: String },
       },
     ],
     company_details: {
@@ -244,7 +238,7 @@ const HomePageSchema = new mongoose.Schema({
       },
       { _id: false }
     ),
-  }
+  },
 });
 
 const HomePageDataModel = mongoose.model("HomePage", HomePageSchema);

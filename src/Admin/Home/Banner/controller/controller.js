@@ -1,11 +1,12 @@
 const { HomePageDataModel } = require("../../../../Home/model/model");
+const { BannerDataModel } = require("../../../Banners/model/model");
 const { ProductDataModel } = require("../../Product/model/model");
 
 const addBannerHomepage = async (req, res) => {
   try {
-    const { title, description } = req.body;
-    let rawData = req.body.data;
+    const { data } = req.body;
 
+    let rawData = data;
     if (rawData) {
       rawData = Array.isArray(rawData) ? rawData : [rawData];
     }
@@ -14,7 +15,8 @@ const addBannerHomepage = async (req, res) => {
           id: String(id),
           isHidden: false,
         }))
-      : undefined;
+      : [];
+
     let homePage = await HomePageDataModel.findOne({
       structure_type: "banner",
     });
@@ -26,38 +28,32 @@ const addBannerHomepage = async (req, res) => {
     if (!homePage) {
       homePage = new HomePageDataModel({
         structure_type: "banner",
-        content: { banner: { data: [], title: "", description: "" } },
+        content: { banner: { data: [] } },
       });
     }
-      
-       
-   
-    homePage.content.banner = {
-      data: transformedData !== undefined ? transformedData : homePage.content.banner.data,
-      title: title !== undefined ? title : homePage.content.banner.title,
-      description:
-        description !== undefined ? description : homePage.content.banner.description,
-    };
+
+    homePage.content.banner.data = transformedData;
     await homePage.save();
 
     res.status(201).json({
-      message: "Banner data added successfully",
+      message: "Banner data added to homepage successfully",
       data: homePage.content.banner,
     });
   } catch (error) {
-    console.error("Error adding banner data:", error);
+    console.error("Error adding banner data to homepage:", error);
     res.status(500).json({
-      message: "Error adding banner data",
+      message: "Error adding banner data to homepage",
       error: error.message,
     });
   }
 };
 
+// Update Homepage Banner
 const updateHomepageBanner = async (req, res) => {
   try {
-    const { title, description } = req.body;
-    let rawData = req.body.data;
+    const { data } = req.body;
 
+    let rawData = data;
     if (rawData) {
       rawData = Array.isArray(rawData) ? rawData : [rawData];
     }
@@ -67,7 +63,7 @@ const updateHomepageBanner = async (req, res) => {
           id: String(id),
           isHidden: false,
         }))
-      : undefined;
+      : [];
 
     const homePage = await HomePageDataModel.findOne({
       structure_type: "banner",
@@ -76,16 +72,7 @@ const updateHomepageBanner = async (req, res) => {
       return res.status(404).json({ message: "Banner section not found" });
     }
 
-    if (transformedData !== undefined) {
-      homePage.content.banner.data.push(...transformedData);
-    }
-    if (title !== undefined) {
-      homePage.content.banner.title = title;
-    }
-    if (description !== undefined) {
-      homePage.content.banner.description = description;
-    }
-
+    homePage.content.banner.data = transformedData;
     await homePage.save();
 
     res.status(200).json({
@@ -103,10 +90,10 @@ const updateHomepageBanner = async (req, res) => {
 
 const bannerVisibility = async (req, res) => {
   try {
-    const { productId } = req.body;
+    const { bannerId } = req.body;
 
-    if (!productId) {
-      return res.status(400).json({ message: "ProductId is required" });
+    if (!bannerId) {
+      return res.status(400).json({ message: "bannerId is required" });
     }
 
     const homePage = await HomePageDataModel.findOne({
@@ -117,7 +104,7 @@ const bannerVisibility = async (req, res) => {
     }
 
     const itemIndex = homePage.content.banner.data.findIndex(
-      (item) => item.id === productId
+      (item) => item.id === bannerId
     );
 
     if (itemIndex < 0) {
@@ -153,9 +140,9 @@ const getAllHomepageBanners = async (req, res) => {
       return res.status(404).json({ message: "Banner section not found" });
     }
 
-    const productIds = homePage.content.banner.data.map((item) => item.id);
+    const bannerIds = homePage.content.banner.data.map((item) => item.id);
 
-    if (productIds.length === 0) {
+    if (bannerIds.length === 0) {
       return res.status(200).json({
         structure: "banner",
         data: [],
@@ -164,29 +151,12 @@ const getAllHomepageBanners = async (req, res) => {
       });
     }
 
-    const products = await ProductDataModel.find({
-      _id: { $in: productIds },
-    }).select("thumbnail_image main_image product_text_color");
-
-    const data = homePage.content.banner.data
-      .map((item) => {
-        const product = products.find((p) => p._id.toString() === item.id);
-        return product
-          ? {
-              thumbnail_image: product.thumbnail_image,
-              banner_image: product.main_image,
-              product_color: product.product_text_color,
-              isHidden: item.isHidden,
-            }
-          : null;
-      })
-      .filter((item) => item !== null);
-
+    const banners = await BannerDataModel.find({
+      _id: { $in: bannerIds },
+    })
     res.status(200).json({
       structure: "banner",
-      data,
-      title: homePage.content.banner.title,
-      description: homePage.content.banner.description,
+      data:banners
     });
   } catch (error) {
     console.error("Error retrieving all banner data:", error);

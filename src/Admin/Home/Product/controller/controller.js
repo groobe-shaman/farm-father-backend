@@ -74,10 +74,8 @@ const upload = multer({
   }),
 }).fields([
   { name: "main_image", maxCount: 1 },
-  { name: "banner_image", maxCount: 1 },
   { name: "highlight_media", maxCount: 1 },
   { name: "product_images", maxCount: 10 },
-  { name: "thumbnail_image", maxCount: 1 },
 ]);
 
 async function getNextId() {
@@ -109,22 +107,15 @@ const addProduct = async (req, res) => {
         
       const files = req.files || {};
       const mainImage = files.main_image?.[0];
-      const bannerImage = files.banner_image?.[0];
       const highlightMedia = files.highlight_media?.[0];
-      const thumbnailImage = files.thumbnail_image?.[0];
       const productImagesFiles = files.product_images || [];
 
       if (!mainImage) {
         return res.status(400).json({ message: "Main image is required" });
       }
-      if (!bannerImage) {
-        return res.status(400).json({ message: "Banner image is required" });
-      }
+      
       if (!highlightMedia) {
         return res.status(400).json({ message: "Highlight media is required" });
-      }
-      if (!thumbnailImage) {
-        return res.status(400).json({ message: "Thumbnail image is required" });
       }
       if (productImagesFiles.length === 0) {
         return res
@@ -133,9 +124,7 @@ const addProduct = async (req, res) => {
       }
 
       const mainImagePath = `product/main_image/${mainImage.filename}`;
-      const bannerImagePath = `product/banner_image/${bannerImage.filename}`;
       const highlightMediaPath = `product/highlight_media/${highlightMedia.filename}`;
-      const thumbnailImagePath = `product/thumbnail_image/${thumbnailImage.filename}`;
       const productImages = productImagesFiles.map(
         (file) => `product/product_images/${file.filename}`
       );
@@ -255,8 +244,6 @@ const addProduct = async (req, res) => {
         availability: availability,
         cta_buttons: ctaButtons,
         main_image: mainImagePath,
-        banner_image: bannerImagePath,
-        thumbnail_image: thumbnailImagePath,
         highlight_media: highlightMediaPath,
         product_images: productImages,
         thumbnail_images: thumbnailImages,
@@ -298,7 +285,6 @@ const updateProduct = async (req, res) => {
       const files = req.files || {};
       const mainImage = files.main_image?.[0];
       const highlightMedia = files.highlight_media?.[0];
-      const thumbnailImage = files.thumbnail_image?.[0];
       const productImagesFiles = files.product_images || [];
 
       if (productImagesFiles.length > 0 && productImagesFiles.length === 0) {
@@ -313,9 +299,6 @@ const updateProduct = async (req, res) => {
       const highlightMediaPath = highlightMedia
         ? `product/highlight_media/${highlightMedia.filename}`
         : product.highlight_media;
-      const thumbnailImagePath = thumbnailImage
-        ? `product/thumbnail_image/${thumbnailImage.filename}`
-        : product.thumbnail_image;
       const productImages =
         productImagesFiles.length > 0
           ? productImagesFiles.map(
@@ -393,7 +376,6 @@ const updateProduct = async (req, res) => {
       product.cta_buttons = ctaButtons;
       product.main_image = mainImagePath;
       product.highlight_media = highlightMediaPath;
-      product.thumbnail_image = thumbnailImagePath;
       product.product_images = productImages;
       product.thumbnail_images = thumbnailImages;
       product.product_text_color =
