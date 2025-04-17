@@ -59,7 +59,7 @@ app.use("/api/v1/essence", EssenceRouter);
 app.use('/api/v1/madefor',MadeForRouter)
 app.use('/api/v1/benefits',BenefitsRouter)
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`App is running at ${PORT}`);
