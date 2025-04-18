@@ -47,8 +47,8 @@ const addBanner = async (req, res) => {
         title,
         description,
         product_color,
-        thumbnail_image: req.files["thumbnail_image"]?.[0] ? `product/banner_images/${req.files["thumbnail_image"][0].filename}` : "",
-        banner_image: req.files["banner_image"]?.[0] ? `product/banner_images/${req.files["banner_image"][0].filename}` : "",
+        thumbnail_image: req.files["thumbnail_image"]?.[0] ? `banner_images/${req.files["thumbnail_image"][0].filename}` : "",
+        banner_image: req.files["banner_image"]?.[0] ? `banner_images/${req.files["banner_image"][0].filename}` : "",
       });
       await newBanner.save();
 
@@ -84,7 +84,7 @@ const updateBanner = async (req, res) => {
 
     try {
 
-      const { banner_id, title, description,product_color } = req.body;
+      const { banner_id, title, description ,product_color } = req.body;
 
       if (!banner_id) {
         return res.status(400).json({
@@ -98,13 +98,13 @@ const updateBanner = async (req, res) => {
           message: "Banner not found",
         });
       }
-
+     
       banner.title = title || banner.title;
       banner.description = description || banner.description;
-      banner.description = product_color || banner.product_color;
-      banner.thumbnail_image = req.files["thumbnail_image"]?.[0] ? `product/banner_images/${req.files["thumbnail_image"][0].filename}` : banner.thumbnail_image;
-      banner.banner_image = req.files["banner_image"]?.[0] ? `product/banner_images/${req.files["banner_image"][0].filename}` : banner.banner_image;
-
+      banner.product_color= product_color || banner.product_color;
+      banner.thumbnail_image = req.files["thumbnail_image"]?.[0] ? `banner_images/${req.files["thumbnail_image"][0].filename}` : banner.thumbnail_image;
+      banner.banner_image = req.files["banner_image"]?.[0] ? `banner_images/${req.files["banner_image"][0].filename}` : banner.banner_image;
+    
       await banner.save();
 
       res.status(200).json({
