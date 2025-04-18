@@ -199,7 +199,7 @@ const updateEssenceHomepage = async (req, res) => {
         }
 
         let imagePath = imageFile
-          ? `product/essence_images/${imageFile.filename}`
+          ? `home/essence_images/${imageFile.filename}`
           : homePage.content.essence.data[i]?.image;
 
         if (!imagePath) {
