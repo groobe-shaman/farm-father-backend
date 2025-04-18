@@ -62,8 +62,6 @@ const logRawBody = (req, res, next) => {
 };
 
 const addEssenceHomepage = async (req, res) => {
-  console.log("before multer", req.body);
-
   upload(req, res, async function (error) {
     if (error instanceof multer.MulterError || error) {
       return res.status(400).json({

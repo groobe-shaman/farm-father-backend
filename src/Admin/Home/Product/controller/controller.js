@@ -537,13 +537,11 @@ const updateHomepageProducts = async (req, res) => {
     }
 
     if (transformedData !== undefined) {
-      homePage.content.products.data.push(...transformedData);
+      homePage.content.products.data=transformedData;
     }
     if (section_title !== undefined) {
       homePage.content.products.section_title = section_title;
     }
-    console.log("homepage", homePage);
-
     await homePage.save();
 
     res.status(200).json({
