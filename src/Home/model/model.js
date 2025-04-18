@@ -142,7 +142,7 @@ const OurImpactSchema = new mongoose.Schema(
 const AboutUsSchema = new mongoose.Schema(
   {
     section_title: { type: String, default: "" },
-    image: { type: String, default: "" },
+    about_us_image: { type: String, default: "" },
     description: { type: String, default: "" },
     social_media_links: [
       {

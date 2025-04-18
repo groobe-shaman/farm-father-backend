@@ -54,35 +54,35 @@ const addSettings = async (req, res) => {
         {
           platform: "whatsapp",
           icon: req.files["cta_button_whatsapp_icon"]?.[0]?.filename
-            ? `product/settings_images/${req.files["cta_button_whatsapp_icon"][0].filename}`
+            ? `home/settings_icons/${req.files["cta_button_whatsapp_icon"][0].filename}`
             : "",
           link: req.body.cta_button_whatsapp_link || "",
         },
         {
           platform: "facebook",
           icon: req.files["cta_button_facebook_icon"]?.[0]?.filename
-            ? `product/settings_images/${req.files["cta_button_facebook_icon"][0].filename}`
+            ? `home/settings_icons/${req.files["cta_button_facebook_icon"][0].filename}`
             : "",
           link: req.body.cta_button_facebook_link || "",
         },
         {
           platform: "instagram",
           icon: req.files["cta_button_instagram_icon"]?.[0]?.filename
-            ? `product/settings_images/${req.files["cta_button_instagram_icon"][0].filename}`
+            ? `home/settings_icons/${req.files["cta_button_instagram_icon"][0].filename}`
             : "",
           link: req.body.cta_button_instagram_link || "",
         },
         {
           platform: "linkedin",
           icon: req.files["cta_button_linkedin_icon"]?.[0]?.filename
-            ? `product/settings_images/${req.files["cta_button_linkedin_icon"][0].filename}`
+            ? `home/settings_icons/${req.files["cta_button_linkedin_icon"][0].filename}`
             : "",
           link: req.body.cta_button_linkedin_link || "",
         },
         {
           platform: "pintrest",
           icon: req.files["cta_button_pintrest_icon"]?.[0]?.filename
-            ? `product/settings_images/${req.files["cta_button_pintrest_icon"][0].filename}`
+            ? `home/settings_icons/${req.files["cta_button_pintrest_icon"][0].filename}`
             : "",
           link: req.body.cta_button_pintrest_link || "",
         },
@@ -167,7 +167,7 @@ const updateSettings = async (req, res) => {
         return {
           platform,
           icon: file
-            ? `product/settings_images/${file.filename}`
+            ? `home/settings_icons/${file.filename}`
             : existing.icon || "",
           link: link || existing.link || "",
         };

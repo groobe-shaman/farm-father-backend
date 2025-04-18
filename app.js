@@ -38,6 +38,7 @@ const AdminOurWallRouter=require("./src/Admin/Home/OurWall/router/router")
 const AdminWhyChooseUsRouter=require('./src/Admin/Home/WhyChooseUs/router/router')
 const AdminHomeContactUsRouter=require("./src/Admin/Home/ContactUs/router/router")
 const AdminSettingsRouter=require("./src/Admin/Home/Settings/router/router")
+const AdminAboutUsRouter=require("./src/Admin/Home/AboutUs/router/router")
 
 const BannerRouter = require("./src/Home/Banner/router/router");
 const ContactUsRouter = require("./src/ContactUs/router/router");
@@ -49,6 +50,7 @@ const OurWallRouter=require("./src/Home/OurWall/router/router")
 const WhyChooseUsRouter=require("./src/Home/WhyChooseUs/router/router")
 const HomeContactUsRouter=require("./src/Home/ContactUs/router/router")
 const SettingsRouter=require('./src/Home/Settings/router/router')
+const AboutUsRouter=require('./src/Home/AboutUs/router/router')
 
 app.use(
   "/api/v1/admin",
@@ -64,6 +66,7 @@ app.use(
   AdminWhyChooseUsRouter,
   AdminHomeContactUsRouter,
   AdminSettingsRouter,
+  AdminAboutUsRouter
 );
 
 app.use("/api/v1/banner", BannerRouter);
@@ -76,6 +79,7 @@ app.use('/api/v1/ourwall',OurWallRouter)
 app.use('/api/v1/whychooseus',WhyChooseUsRouter)
 app.use('/api/v1/home/contactus',HomeContactUsRouter)
 app.use("/api/v1/settings",SettingsRouter)
+app.use("/api/v1/aboutus",AboutUsRouter)
 
 const PORT = process.env.PORT || 3000;
 
