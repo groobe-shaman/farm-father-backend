@@ -104,7 +104,7 @@ const addProduct = async (req, res) => {
       const sort_id = req.body.sort_id
         ? parseInt(req.body.sort_id)
         : newSort_id;
-        
+
       const files = req.files || {};
       const mainImage = files.main_image?.[0];
       const highlightMedia = files.highlight_media?.[0];
@@ -113,7 +113,7 @@ const addProduct = async (req, res) => {
       if (!mainImage) {
         return res.status(400).json({ message: "Main image is required" });
       }
-      
+
       if (!highlightMedia) {
         return res.status(400).json({ message: "Highlight media is required" });
       }
@@ -299,15 +299,29 @@ const updateProduct = async (req, res) => {
       const highlightMediaPath = highlightMedia
         ? `product/highlight_media/${highlightMedia.filename}`
         : product.highlight_media;
-      const productImages =
-        productImagesFiles.length > 0
-          ? productImagesFiles.map(
-              (file) => `product/product_images/${file.filename}`
-            )
-          : product.product_images;
+      // const productImages =
+      //   productImagesFiles.length > 0
+      //     ? productImagesFiles.map(
+      //         (file) => `product/product_images/${file.filename}`
+      //       )
+      //     : product.product_images;
 
-      let thumbnailImages = product.thumbnail_images;
+      let existingImages = req.body.existing_images
+        ? typeof req.body.existing_images === "string"
+          ? JSON.parse(req.body.existing_images)
+          : req.body.existing_images
+        : [];
+      existingImages = Array.isArray(existingImages) ? existingImages : [];
+      const updatedProductImages = product.product_images.filter((img) =>
+        existingImages.includes(img)
+      );
+
+      // let thumbnailImages = product.thumbnail_images;
       if (productImagesFiles.length > 0) {
+        const newImagePaths = productImagesFiles.map(
+          (file) => `product/product_images/${file.filename}`
+        );
+        updatedProductImages.push(...newImagePaths);
         const thumbnailDir = path.join(
           process.cwd(),
           "public",
@@ -315,7 +329,7 @@ const updateProduct = async (req, res) => {
           "product_thumbnail_images"
         );
         ensureDirExists(thumbnailDir);
-        thumbnailImages = [];
+        const newThumbnailImages = [];
 
         for (const imageFile of productImagesFiles) {
           const absoluteProductImagePath = imageFile.path;
@@ -327,7 +341,7 @@ const updateProduct = async (req, res) => {
               .resize(50, 50)
               .jpeg({ quality: 70 })
               .toFile(thumbnailPath);
-            thumbnailImages.push(
+            newThumbnailImages.push(
               `product/product_thumbnail_images/${thumbnailFilename}`
             );
           } catch (err) {
@@ -338,11 +352,16 @@ const updateProduct = async (req, res) => {
           }
         }
 
-        if (thumbnailImages.length === 0) {
-          return res
-            .status(400)
-            .json({ message: "At least one thumbnail image is required" });
-        }
+        const existingThumbnailImages = product.thumbnail_images.filter(
+          (thumb) =>
+            updatedProductImages.includes(
+              `product/product_images/${path.basename(thumb)}`
+            )
+        );
+        product.thumbnail_images = [
+          ...existingThumbnailImages,
+          ...newThumbnailImages,
+        ];
       }
 
       const featuresSubTitles = req.body.features_sub_titles
@@ -376,8 +395,7 @@ const updateProduct = async (req, res) => {
       product.cta_buttons = ctaButtons;
       product.main_image = mainImagePath;
       product.highlight_media = highlightMediaPath;
-      product.product_images = productImages;
-      product.thumbnail_images = thumbnailImages;
+      product.product_images = updatedProductImages;
       product.product_text_color =
         req.body.product_text_color || product.product_text_color;
 
@@ -528,7 +546,6 @@ const updateHomepageProducts = async (req, res) => {
         }))
       : undefined;
 
-  
     const homePage = await HomePageDataModel.findOne({
       structure_type: "products",
     });
@@ -537,7 +554,7 @@ const updateHomepageProducts = async (req, res) => {
     }
 
     if (transformedData !== undefined) {
-      homePage.content.products.data=transformedData;
+      homePage.content.products.data = transformedData;
     }
     if (section_title !== undefined) {
       homePage.content.products.section_title = section_title;
