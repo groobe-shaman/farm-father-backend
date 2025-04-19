@@ -41,6 +41,7 @@ const AdminSettingsRouter=require("./src/Admin/Home/Settings/router/router")
 const AdminAboutUsRouter=require("./src/Admin/Home/AboutUs/router/router")
 const AdminHowToUseRouter=require('./src/Admin/Home/HowToUse/router/router')
 const AdminOurImpactRouter=require('./src/Admin/Home/OurImpact/router/router')
+const AdminPolicyRouter=require("./src/Admin/Home/Policies/router/router")
 
 const BannerRouter = require("./src/Home/Banner/router/router");
 const ContactUsRouter = require("./src/ContactUs/router/router");
@@ -55,6 +56,7 @@ const SettingsRouter=require('./src/Home/Settings/router/router')
 const AboutUsRouter=require('./src/Home/AboutUs/router/router')
 const HowToUseRouter=require('./src/Home/HowToUse/router/router')
 const OurImpactRouter=require('./src/Home/OurImpact/router/router')
+const PolicyRouter=require("./src/Home/Policies/router/router")
 
 app.use(
   "/api/v1/admin",
@@ -72,7 +74,8 @@ app.use(
   AdminSettingsRouter,
   AdminAboutUsRouter,
   AdminHowToUseRouter,
-  AdminOurImpactRouter
+  AdminOurImpactRouter,
+  AdminPolicyRouter
 );
 
 app.use("/api/v1/banner", BannerRouter);
@@ -88,6 +91,7 @@ app.use("/api/v1/settings",SettingsRouter)
 app.use("/api/v1/aboutus",AboutUsRouter)
 app.use("/api/v1/howtouse",HowToUseRouter)
 app.use("/api/v1/ourimpact",OurImpactRouter)
+app.use("/api/v1/policies/",PolicyRouter)
 
 const PORT = process.env.PORT || 3000;
 
