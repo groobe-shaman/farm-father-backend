@@ -5,11 +5,13 @@ const getWhyChooseUs = async (req, res) => {
       const whyChooseUs = await HomePageDataModel.findOne({ structure_type: "why_choose_us" });
       if (!whyChooseUs || !whyChooseUs.content.why_choose_us) {
         return res.status(404).json({
+          success:false,
           message: "Why Choose Us section not found",
         });
       }
   
       res.status(200).json({
+        success:true,
         data: {
           structure: "why_choose_us",
           feature_titles: whyChooseUs.content.why_choose_us.feature_titles,
@@ -22,6 +24,7 @@ const getWhyChooseUs = async (req, res) => {
     } catch (error) {
       console.error("Error fetching Why Choose Us data:", error);
       res.status(500).json({
+        success:false,
         message: "Error fetching Why Choose Us data",
         error: error.message,
       });

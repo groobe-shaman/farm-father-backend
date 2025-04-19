@@ -22,6 +22,7 @@ const addBannerHomepage = async (req, res) => {
     });
     if (homePage) {
       return res.status(400).json({
+        success:false,
         message: "Cannot add banner structure again, instead update it",
       });
     }
@@ -36,12 +37,14 @@ const addBannerHomepage = async (req, res) => {
     await homePage.save();
 
     res.status(201).json({
+      success:true,
       message: "Banner data added to homepage successfully",
       data: homePage.content.banner,
     });
   } catch (error) {
     console.error("Error adding banner data to homepage:", error);
     res.status(500).json({
+      success:false,
       message: "Error adding banner data to homepage",
       error: error.message,
     });
@@ -69,19 +72,21 @@ const updateHomepageBanner = async (req, res) => {
       structure_type: "banner",
     });
     if (!homePage) {
-      return res.status(404).json({ message: "Banner section not found" });
+      return res.status(404).json({success:false, message: "Banner section not found" });
     }
 
     homePage.content.banner.data = transformedData;
     await homePage.save();
 
     res.status(200).json({
+      success:true,
       message: "Banner data updated successfully",
       data: homePage.content.banner,
     });
   } catch (error) {
     console.error("Error updating banner data:", error);
     res.status(500).json({
+      success:false,
       message: "Error updating banner data",
       error: error.message,
     });
@@ -93,14 +98,14 @@ const bannerVisibility = async (req, res) => {
     const { bannerId } = req.body;
 
     if (!bannerId) {
-      return res.status(400).json({ message: "bannerId is required" });
+      return res.status(400).json({success:false, message: "bannerId is required" });
     }
 
     const homePage = await HomePageDataModel.findOne({
       structure_type: "banner",
     });
     if (!homePage) {
-      return res.status(404).json({ message: "Banner section not found" });
+      return res.status(404).json({success:false, message: "Banner section not found" });
     }
 
     const itemIndex = homePage.content.banner.data.findIndex(
@@ -108,7 +113,7 @@ const bannerVisibility = async (req, res) => {
     );
 
     if (itemIndex < 0) {
-      return res.status(404).json({ message: "Banner item not found" });
+      return res.status(404).json({success:false, message: "Banner item not found" });
     }
 
     homePage.content.banner.data[itemIndex].isHidden =
@@ -117,12 +122,14 @@ const bannerVisibility = async (req, res) => {
     await homePage.save();
 
     res.status(200).json({
+      success:true,
       message: "Banner visibility updated successfully",
       data: homePage.content.banner.data[itemIndex],
     });
   } catch (error) {
     console.error("Error updating banner visibility:", error);
     res.status(500).json({
+      success:false,
       message: "Error updating banner visibility",
       error: error.message,
     });
@@ -137,13 +144,14 @@ const getAllHomepageBanners = async (req, res) => {
       structure_type: "banner",
     });
     if (!homePage || !homePage.content.banner) {
-      return res.status(404).json({ message: "Banner section not found" });
+      return res.status(404).json({success:false, message: "Banner section not found" });
     }
 
     const bannerIds = homePage.content.banner.data.map((item) => item.id);
 
     if (bannerIds.length === 0) {
       return res.status(200).json({
+        success:true,
         structure: "banner",
         data: [],
         title: homePage.content.banner.title,
@@ -155,12 +163,14 @@ const getAllHomepageBanners = async (req, res) => {
       _id: { $in: bannerIds },
     })
     res.status(200).json({
+      success:true,
       structure: "banner",
       data:banners
     });
   } catch (error) {
     console.error("Error retrieving all banner data:", error);
     res.status(500).json({
+      success:false,
       message: "Error retrieving all banner data",
       error: error.message,
     });

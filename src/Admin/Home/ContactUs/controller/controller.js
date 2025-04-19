@@ -35,11 +35,13 @@ const addContactUsHomepage = async (req, res) => {
 
       if (images.length < 3) {
         return res.status(400).json({
+          success:false,
           message: `Need ${3 - images.length} more image(s)`,
         });
       }
       if (images.length > 3) {
         return res.status(400).json({
+          success:false,
           message: "Only 3 images can be uploaded",
         });
       }
@@ -47,6 +49,7 @@ const addContactUsHomepage = async (req, res) => {
       const existingContactUs = await HomePageDataModel.findOne({ structure_type: "contact_us" });
       if (existingContactUs) {
         return res.status(400).json({
+          success:false,
           message: "Contact Us section already exists. Please update it instead.",
         });
       }
@@ -64,6 +67,7 @@ const addContactUsHomepage = async (req, res) => {
       await newContactUs.save();
 
       res.status(201).json({
+        success:true,
         message: "Contact Us data added successfully",
         data: {
           structure: "contact_us",
@@ -74,6 +78,7 @@ const addContactUsHomepage = async (req, res) => {
     } catch (error) {
       console.error("Error adding Contact Us data:", error);
       res.status(500).json({
+        success:false,
         message: "Error adding Contact Us data",
         error: error.message,
       });
@@ -96,6 +101,7 @@ const updateContactUsHomepage = async (req, res) => {
       const contactUs = await HomePageDataModel.findOne({ structure_type: "contact_us" });
       if (!contactUs) {
         return res.status(404).json({
+          success:false,
           message: "Contact Us section not found",
         });
       }
@@ -110,11 +116,13 @@ const updateContactUsHomepage = async (req, res) => {
 
       if (updatedImages.length < 3) {
         return res.status(400).json({
+          success:false,
           message: `Need ${3 - updatedImages.length} more image(s) to maintain three images`,
         });
       }
       if (updatedImages.length > 3) {
         return res.status(400).json({
+          success:false,
           message: "Only 3 images can be uploaded",
         });
       }
@@ -125,6 +133,7 @@ const updateContactUsHomepage = async (req, res) => {
       await contactUs.save();
 
       res.status(200).json({
+        success:true,
         message: "Contact Us data updated successfully",
         data: {
           structure: "contact_us",
@@ -135,6 +144,7 @@ const updateContactUsHomepage = async (req, res) => {
     } catch (error) {
       console.error("Error updating Contact Us data:", error);
       res.status(500).json({
+        success:false,
         message: "Error updating Contact Us data",
         error: error.message,
       });
@@ -147,11 +157,13 @@ const getContactUsHomepage = async (req, res) => {
     const contactUs = await HomePageDataModel.findOne({ structure_type: "contact_us" });
     if (!contactUs || !contactUs.content.contact_us) {
       return res.status(404).json({
+        success:false,
         message: "Contact Us section not found",
       });
     }
 
     res.status(200).json({
+      success:true,
       data: {
         structure: "contact_us",
         images: contactUs.content.contact_us.images,
@@ -161,6 +173,7 @@ const getContactUsHomepage = async (req, res) => {
   } catch (error) {
     console.error("Error fetching Contact Us data:", error);
     res.status(500).json({
+      success:false,
       message: "Error fetching Contact Us data",
       error: error.message,
     });

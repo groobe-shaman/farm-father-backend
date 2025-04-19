@@ -93,6 +93,7 @@ const addSettings = async (req, res) => {
       });
       if (existingSettings) {
         return res.status(400).json({
+          success:false,
           message: "Settings section already exists. Please update it instead.",
         });
       }
@@ -114,6 +115,7 @@ const addSettings = async (req, res) => {
       await newSettings.save();
 
       res.status(201).json({
+        success:true,
         message: "Settings data added successfully",
         data: {
           structure: "settings",
@@ -124,6 +126,7 @@ const addSettings = async (req, res) => {
     } catch (error) {
       console.error("Error adding Settings data:", error);
       res.status(500).json({
+        success:false,
         message: "Error adding Settings data",
         error: error.message,
       });
@@ -152,7 +155,7 @@ const updateSettings = async (req, res) => {
       });
 
       if (!settings) {
-        return res.status(404).json({ message: "Settings section not found" });
+        return res.status(404).json({ success:false,message: "Settings section not found" });
       }
 
       const updatedLinks = platforms.map((platform) => {
@@ -187,12 +190,14 @@ const updateSettings = async (req, res) => {
       await settings.save();
 
       res.status(200).json({
+        success:true,
         message: "Settings data updated successfully",
         data: settings.content.settings,
       });
     } catch (error) {
       console.error("Error updating Settings data:", error);
       res.status(500).json({
+        success:false,
         message: "Error updating Settings data",
         error: error.message,
       });
@@ -205,15 +210,17 @@ const getSettings = async (req, res) => {
       const settings = await HomePageDataModel.findOne({ structure_type: "settings" });
   
       if (!settings || !settings.content.settings) {
-        return res.status(404).json({ message: "Settings section not found" });
+        return res.status(404).json({success:false, message: "Settings section not found" });
       }
   
       res.status(200).json({
+        success:true,
         data: settings.content.settings,
       });
     } catch (error) {
       console.error("Error fetching Settings data:", error);
       res.status(500).json({
+        success:false,
         message: "Error fetching Settings data",
         error: error.message,
       });

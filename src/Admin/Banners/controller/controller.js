@@ -39,6 +39,7 @@ const addBanner = async (req, res) => {
 
       if (!title || !description) {
         return res.status(400).json({
+          success:false,
           message: "title and description are required",
         });
       }
@@ -53,6 +54,7 @@ const addBanner = async (req, res) => {
       await newBanner.save();
 
       res.status(201).json({
+        success:true,
         message: "Banner created successfully",
         data: {
           banner_id: newBanner._id,
@@ -66,6 +68,7 @@ const addBanner = async (req, res) => {
     } catch (error) {
       console.error("Error creating banner:", error);
       res.status(500).json({
+        success:false,
         message: "Error creating banner",
         error: error.message,
       });
@@ -88,6 +91,7 @@ const updateBanner = async (req, res) => {
 
       if (!banner_id) {
         return res.status(400).json({
+          success:false,
           message: "banner_id is required",
         });
       }
@@ -95,6 +99,7 @@ const updateBanner = async (req, res) => {
       const banner = await BannerDataModel.findById(banner_id);
       if (!banner) {
         return res.status(404).json({
+          success:false,
           message: "Banner not found",
         });
       }
@@ -108,6 +113,7 @@ const updateBanner = async (req, res) => {
       await banner.save();
 
       res.status(200).json({
+        success:true,
         message: "Banner updated successfully",
         data: {
           banner_id: banner._id,
@@ -121,6 +127,7 @@ const updateBanner = async (req, res) => {
     } catch (error) {
       console.error("Error updating banner:", error);
       res.status(500).json({
+        success:false,
         message: "Error updating banner",
         error: error.message,
       });
@@ -146,6 +153,7 @@ const getAllBanners = async (req, res) => {
   } catch (error) {
     console.error("Error fetching banners:", error);
     res.status(500).json({
+      success:false,
       message: "Error fetching banners",
       error: error.message,
     });
@@ -157,6 +165,7 @@ const getBannerById = async (req, res) => {
     const { banner_id } = req.params;
     if (!banner_id) {
       return res.status(400).json({
+        success:false,
         message: "banner_id is required in params",
       });
     }
@@ -164,6 +173,7 @@ const getBannerById = async (req, res) => {
     const banner = await BannerDataModel.findById(banner_id);
     if (!banner) {
       return res.status(404).json({
+        success:false,
         message: "Banner not found",
       });
     }
@@ -183,6 +193,7 @@ const getBannerById = async (req, res) => {
   } catch (error) {
     console.error("Error fetching banner by ID:", error);
     res.status(500).json({
+      success:false,
       message: "Error fetching banner by ID",
       error: error.message,
     });

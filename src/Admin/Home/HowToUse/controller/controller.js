@@ -80,6 +80,7 @@ const addHowToUseHomepage = async (req, res) => {
       ];
       if (!expectedFields.every((field) => files[field]?.[0])) {
         return res.status(400).json({
+          success:false,
           message: "Images for all 5 data items are required",
         });
       }
@@ -121,6 +122,7 @@ const addHowToUseHomepage = async (req, res) => {
       });
       if (homePage) {
         return res.status(400).json({
+          success:false,
           message: "How To Use section already exists. Please update it instead.",
         });
       }
@@ -138,6 +140,7 @@ const addHowToUseHomepage = async (req, res) => {
       await newHomePage.save();
 
       res.status(201).json({
+        success:true,
         message: "How To Use data added successfully",
         data: {
           structure: "how_to_use",
@@ -148,6 +151,7 @@ const addHowToUseHomepage = async (req, res) => {
     } catch (error) {
       console.error("Error adding how_to_use data:", error);
       res.status(500).json({
+        success:false,
         message: "Error adding how_to_use data",
         error: error.message,
       });
@@ -178,6 +182,7 @@ const updateHowToUseHomepage = async (req, res) => {
 
       if (!homePage) {
         return res.status(404).json({
+          success:false,
           message: "How To Use section not found",
         });
       }
@@ -201,6 +206,7 @@ const updateHowToUseHomepage = async (req, res) => {
 
         if (!imagePath) {
           return res.status(400).json({
+            success:false,
             message: `Image for data[${i}] is required and no existing image found`,
           });
         }
@@ -222,6 +228,7 @@ const updateHowToUseHomepage = async (req, res) => {
       await homePage.save();
 
       res.status(200).json({
+        success:true,
         message: "How To Use data updated successfully",
         data: {
           structure: "how_to_use",
@@ -232,6 +239,7 @@ const updateHowToUseHomepage = async (req, res) => {
     } catch (error) {
       console.error("Error updating how_to_use data:", error);
       res.status(500).json({
+        success:false,
         message: "Error updating how_to_use data",
         error: error.message,
       });
@@ -246,6 +254,7 @@ const getHowToUseHomepage = async (req, res) => {
     });
     if (!homePage) {
       return res.status(404).json({
+        success:false,
         message: "How To Use section not found",
       });
     }
@@ -257,6 +266,7 @@ const getHowToUseHomepage = async (req, res) => {
   } catch (error) {
     console.error("Error fetching how_to_use data:", error);
     res.status(500).json({
+      success:false,
       message: "Error fetching how_to_use data",
       error: error.message,
     });

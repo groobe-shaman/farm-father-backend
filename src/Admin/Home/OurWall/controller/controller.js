@@ -72,6 +72,7 @@ const addOurWallHomepage = async (req, res) => {
       ];
       if (!expectedFields.every((field) => files[field]?.[0])) {
         return res.status(400).json({
+          success:false,
           message: "Images for all 5 data items are required",
         });
       }
@@ -95,6 +96,7 @@ const addOurWallHomepage = async (req, res) => {
           !imageFile
         ) {
           return res.status(400).json({
+            success:false,
             message: `All fields (image, name, rating , location) are required for data[${i}]`,
           });
         }
@@ -112,6 +114,7 @@ const addOurWallHomepage = async (req, res) => {
       });
       if (homePage) {
         return res.status(400).json({
+          success:false,
           message:
             "Our Wall Of Love section already exists. Please update it instead.",
         });
@@ -130,6 +133,7 @@ const addOurWallHomepage = async (req, res) => {
       await newHomePage.save();
 
       res.status(201).json({
+        success:true,
         message: "Our Wall of Love data added successfully",
         data: {
           structure: "our_wall_of_love",
@@ -140,6 +144,7 @@ const addOurWallHomepage = async (req, res) => {
     } catch (error) {
       console.error("Error adding our_wall_of_love data:", error);
       res.status(500).json({
+        success:false,
         message: "Error adding our_wall_of_love data",
         error: error.message,
       });
@@ -170,6 +175,7 @@ const updateOurWallHomepage = async (req, res) => {
 
       if (!homePage) {
         return res.status(404).json({
+          success:false,
           message: "Our Wall of Love section not found",
         });
       }
@@ -183,6 +189,7 @@ const updateOurWallHomepage = async (req, res) => {
 
         if (!item || !item.name || !item.rating || !item.location) {
           return res.status(400).json({
+            success:false,
             message: `All fields (name, rating, location) are required for data[${i}]`,
           });
         }
@@ -193,6 +200,7 @@ const updateOurWallHomepage = async (req, res) => {
 
         if (!imagePath) {
           return res.status(400).json({
+            success:false,
             message: `Image for data[${i}] is required and no existing image found`,
           });
         }
@@ -214,6 +222,7 @@ const updateOurWallHomepage = async (req, res) => {
       await homePage.save();
 
       res.status(200).json({
+        success:true,
         message: "Our Wall Of Love data updated successfully",
         data: {
           structure: "our_wall_of_love",
@@ -224,6 +233,7 @@ const updateOurWallHomepage = async (req, res) => {
     } catch (error) {
       console.error("Error updating our_wall_of_love data:", error);
       res.status(500).json({
+        success:false,
         message: "Error updating our_wall_of_love data",
         error: error.message,
       });
@@ -238,17 +248,20 @@ const getOurWallHomepage = async (req, res) => {
     });
     if (!homePage) {
       return res.status(404).json({
+        success:false,
         message: "Our Wall of Love section not found",
       });
     }
 
     res.status(200).json({
+      success:true,
       data: homePage.content.our_wall_of_love.data,
       section_title: homePage.content.our_wall_of_love.section_title,
     });
   } catch (error) {
     console.error("Error fetching our_wall_of_love data:", error);
     res.status(500).json({
+      success:false,
       message: "Error fetching our_wall_of_love data",
       error: error.message,
     });

@@ -7,17 +7,20 @@ const getMadeForHomepage = async (req, res) => {
     });
     if (!homePage) {
       return res.status(404).json({
+        success:false,
         message: "Product made for section not found",
       });
     }
 
     res.status(200).json({
+      success:true,
       data: homePage.content.product_made_for.data,
       section_title: homePage.content.product_made_for.section_title,
     });
   } catch (error) {
     console.error("Error fetching product_made_for data:", error);
     res.status(500).json({
+      success:false,
       message: "Error fetching product_made_for data",
       error: error.message,
     });

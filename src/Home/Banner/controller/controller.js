@@ -8,7 +8,7 @@ const getHomepageBanners = async (req, res) => {
       structure_type: "banner",
     });
     if (!homePage || !homePage.content.banner) {
-      return res.status(404).json({ message: "Banner section not found" });
+      return res.status(404).json({ success:false,message: "Banner section not found" });
     }
 
     const visibleBannerIds = homePage.content.banner.data
@@ -29,12 +29,14 @@ const getHomepageBanners = async (req, res) => {
    
 
     res.status(200).json({
+      success:true,
       structure: "banner",
       data:banners,
     });
   } catch (error) {
     console.error("Error retrieving banner data:", error);
     res.status(500).json({
+      success:false,
       message: "Error retrieving banner data",
       error: error.message,
     });

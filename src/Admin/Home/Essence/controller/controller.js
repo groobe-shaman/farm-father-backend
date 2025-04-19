@@ -50,17 +50,6 @@ const upload = multer({
   { name: "data[3][image]", maxCount: 1 },
 ]);
 
-const logRawBody = (req, res, next) => {
-  let rawBody = "";
-  req.on("data", (chunk) => {
-    rawBody += chunk.toString();
-  });
-  req.on("end", () => {
-    console.log("Raw Body:", rawBody); 
-    next();
-  });
-};
-
 const addEssenceHomepage = async (req, res) => {
   upload(req, res, async function (error) {
     if (error instanceof multer.MulterError || error) {
@@ -83,6 +72,7 @@ const addEssenceHomepage = async (req, res) => {
       ];
       if (!expectedFields.every((field) => files[field]?.[0])) {
         return res.status(400).json({
+          success:false,
           message: "Images for all 4 data items are required",
         });
       }
@@ -106,6 +96,7 @@ const addEssenceHomepage = async (req, res) => {
           !imageFile
         ) {
           return res.status(400).json({
+            success:false,
             message: `All fields (image, title, title_color, description) are required for data[${i}]`,
           });
         }
@@ -124,6 +115,7 @@ const addEssenceHomepage = async (req, res) => {
       });
       if (homePage) {
         return res.status(400).json({
+          success:false,
           message: "Essence section already exists. Please update it instead.",
         });
       }
@@ -141,6 +133,7 @@ const addEssenceHomepage = async (req, res) => {
       await newHomePage.save();
 
       res.status(201).json({
+        success:true,
         message: "Essence data added successfully",
         data: {
           structure: "essence",
@@ -151,6 +144,7 @@ const addEssenceHomepage = async (req, res) => {
     } catch (error) {
       console.error("Error adding essence data:", error);
       res.status(500).json({
+        success:false,
         message: "Error adding essence data",
         error: error.message,
       });
@@ -181,6 +175,7 @@ const updateEssenceHomepage = async (req, res) => {
 
       if (!homePage) {
         return res.status(404).json({
+          success:false,
           message: "Essence section not found",
         });
       }
@@ -225,6 +220,7 @@ const updateEssenceHomepage = async (req, res) => {
       await homePage.save();
 
       res.status(200).json({
+        success:true,
         message: "Essence data updated successfully",
         data: {
           structure: "essence",
@@ -235,6 +231,7 @@ const updateEssenceHomepage = async (req, res) => {
     } catch (error) {
       console.error("Error updating essence data:", error);
       res.status(500).json({
+        success:false,
         message: "Error updating essence data",
         error: error.message,
       });
@@ -249,17 +246,20 @@ const getEssenceHomepage = async (req, res) => {
     });
     if (!homePage) {
       return res.status(404).json({
+        success:false,
         message: "Essence section not found",
       });
     }
 
     res.status(200).json({
+      success:true,
       data: homePage.content.essence.data,
       section_title: homePage.content.essence.section_title,
     });
   } catch (error) {
     console.error("Error fetching essence data:", error);
     res.status(500).json({
+      success:false,
       message: "Error fetching essence data",
       error: error.message,
     });

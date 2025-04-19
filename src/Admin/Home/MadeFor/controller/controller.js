@@ -67,6 +67,7 @@ const addMadeForHomepage = async (req, res) => {
       ];
       if (!expectedFields.every((field) => files[field]?.[0])) {
         return res.status(400).json({
+          success:false,
           message: "Images for all 3 data items are required",
         });
       }
@@ -90,6 +91,7 @@ const addMadeForHomepage = async (req, res) => {
           !imageFile
         ) {
           return res.status(400).json({
+            success:false,
             message: `All fields (image, title, title_color, description) are required for data[${i}]`,
           });
         }
@@ -107,6 +109,7 @@ const addMadeForHomepage = async (req, res) => {
       });
       if (homePage) {
         return res.status(400).json({
+          success:false,
           message: "Product Made For section already exists. Please update it instead.",
         });
       }
@@ -124,6 +127,7 @@ const addMadeForHomepage = async (req, res) => {
       await newHomePage.save();
 
       res.status(201).json({
+        success:true,
         message: "Product Made For data added successfully",
         data: {
           structure: "product_made_for",
@@ -134,6 +138,7 @@ const addMadeForHomepage = async (req, res) => {
     } catch (error) {
       console.error("Error adding product_made_for data:", error);
       res.status(500).json({
+        success:false,
         message: "Error adding product_made_for data",
         error: error.message,
       });
@@ -164,6 +169,7 @@ const updateMadeForHomepage = async (req, res) => {
 
       if (!homePage) {
         return res.status(404).json({
+          success:false,
           message: "Product Made For section not found",
         });
       }
@@ -177,6 +183,7 @@ const updateMadeForHomepage = async (req, res) => {
 
         if (!item || !item.title || !item.title_color || !item.description) {
           return res.status(400).json({
+            success:false,
             message: `All fields (title, title_color, description) are required for data[${i}]`,
           });
         }
@@ -208,6 +215,7 @@ const updateMadeForHomepage = async (req, res) => {
       await homePage.save();
 
       res.status(200).json({
+        success:true,
         message: "Product Made For data updated successfully",
         data: {
           structure: "product_made_for",
@@ -218,6 +226,7 @@ const updateMadeForHomepage = async (req, res) => {
     } catch (error) {
       console.error("Error updating product_made_for data:", error);
       res.status(500).json({
+        success:false,
         message: "Error updating product_made_for data",
         error: error.message,
       });
@@ -232,17 +241,20 @@ const getMadeForHomepage = async (req, res) => {
     });
     if (!homePage) {
       return res.status(404).json({
+        success:false,
         message: "Product Made For section not found",
       });
     }
 
     res.status(200).json({
+      success:true,
       data: homePage.content.product_made_for.data,
       section_title: homePage.content.product_made_for.section_title,
     });
   } catch (error) {
     console.error("Error fetching product_made_for data:", error);
     res.status(500).json({
+      success:false,
       message: "Error fetching product_made_for data",
       error: error.message,
     });

@@ -7,7 +7,7 @@ const getHomepageProducts= async (req, res) => {
           structure_type: "products",
         });
         if (!homePage || !homePage.content.products) {
-          return res.status(404).json({ message: "Products section not found" });
+          return res.status(404).json({success:false, message: "Products section not found" });
         }
     
         const visibleProductIds = homePage.content.products.data
@@ -42,6 +42,7 @@ const getHomepageProducts= async (req, res) => {
           .filter((item) => item !== null);
     
         res.status(200).json({
+          success:true,
           structure: "products",
           data,
           section_title: homePage.content.products.section_title,
@@ -49,6 +50,7 @@ const getHomepageProducts= async (req, res) => {
       } catch (error) {
         console.error("Error retrieving products data:", error);
         res.status(500).json({
+          success:false,
           message: "Error retrieving products data",
           error: error.message,
         });

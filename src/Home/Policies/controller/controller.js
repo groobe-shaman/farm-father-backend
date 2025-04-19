@@ -7,7 +7,7 @@ const {
 
 const getPrivacyPolicy = async (req, res) => {
   try {
-    const privacyPolicyData = await PrivacyPolicyModel.findOne();
+    const privacyPolicyData = await PrivacyPolicyModel.findOne().select("-updatedAt -createdAt -_id -__v");
     if (!privacyPolicyData) {
       return res.status(404).json({
         success: false,
@@ -32,7 +32,7 @@ const getPrivacyPolicy = async (req, res) => {
 
 const getCopyRightPolicy = async (req, res) => {
   try {
-    const copyRightPolicyData = await CopyRightPolicyModel.findOne();
+    const copyRightPolicyData = await CopyRightPolicyModel.findOne().select("-updatedAt -createdAt -_id -__v");
     if (!copyRightPolicyData) {
       return res.status(404).json({
         success: false,
@@ -57,7 +57,7 @@ const getCopyRightPolicy = async (req, res) => {
 
 const getTermsAndConditions = async (req, res) => {
   try {
-    const termsAndConditionsData = await TermsAndConditionsModel.findOne();
+    const termsAndConditionsData = await TermsAndConditionsModel.findOne().select("-updatedAt -createdAt -_id -__v");
     if (!termsAndConditionsData) {
       return res.status(404).json({
         success: false,
@@ -82,7 +82,7 @@ const getTermsAndConditions = async (req, res) => {
 
 const getHelp = async (req, res) => {
   try {
-    const helpData = await HelpModel.findOne();
+    const helpData = await HelpModel.findOne().select("-updatedAt -createdAt -_id -__v");
     if (!helpData) {
       return res.status(404).json({
         success: false,

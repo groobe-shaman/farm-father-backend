@@ -36,6 +36,7 @@ const addWhyChooseUs = async (req, res) => {
       const existingWhyChooseUs = await HomePageDataModel.findOne({ structure_type: "why_choose_us" });
       if (existingWhyChooseUs) {
         return res.status(400).json({
+          success:false,
           message: "Why Choose Us section already exists. Please update it instead.",
         });
       }
@@ -56,6 +57,7 @@ const addWhyChooseUs = async (req, res) => {
       await newWhyChooseUs.save();
 
       res.status(201).json({
+        success:true,
         message: "Why Choose Us data added successfully",
         data: {
           structure: "why_choose_us",
@@ -69,6 +71,7 @@ const addWhyChooseUs = async (req, res) => {
     } catch (error) {
       console.error("Error adding Why Choose Us data:", error);
       res.status(500).json({
+        success:false,
         message: "Error adding Why Choose Us data",
         error: error.message,
       });

@@ -111,16 +111,17 @@ const addProduct = async (req, res) => {
       const productImagesFiles = files.product_images || [];
 
       if (!mainImage) {
-        return res.status(400).json({ message: "Main image is required" });
+
+        return res.status(400).json({success:false, message: "Main image is required" });
       }
 
       if (!highlightMedia) {
-        return res.status(400).json({ message: "Highlight media is required" });
+        return res.status(400).json({success:false, message: "Highlight media is required" });
       }
       if (productImagesFiles.length === 0) {
         return res
           .status(400)
-          .json({ message: "At least one product image is required" });
+          .json({success:false, message: "At least one product image is required" });
       }
 
       const mainImagePath = `product/main_image/${mainImage.filename}`;
@@ -130,15 +131,15 @@ const addProduct = async (req, res) => {
       );
 
       if (!mainImagePath) {
-        return res.status(400).json({ message: "Main image is required" });
+        return res.status(400).json({success:false, message: "Main image is required" });
       }
       if (!highlightMediaPath) {
-        return res.status(400).json({ message: "Highlight media is required" });
+        return res.status(400).json({success:false, message: "Highlight media is required" });
       }
       if (productImages.length === 0) {
         return res
           .status(400)
-          .json({ message: "At least one product image is required" });
+          .json({ success:false,message: "At least one product image is required" });
       }
 
       const featuresSubTitles = req.body.features_sub_titles
@@ -222,14 +223,14 @@ const addProduct = async (req, res) => {
           console.error("Error processing product image thumbnail:", err);
           return res
             .status(500)
-            .json({ message: "Error processing thumbnail" });
+            .json({success:false, message: "Error processing thumbnail" });
         }
       }
 
       if (thumbnailImages.length === 0) {
         return res
           .status(400)
-          .json({ message: "At least one thumbnail image is required" });
+          .json({success:false, message: "At least one thumbnail image is required" });
       }
 
       const productData = {
@@ -254,11 +255,13 @@ const addProduct = async (req, res) => {
       await product.save();
 
       res.status(201).json({
+        success:true,
         message: "Product created successfully",
         data: product,
       });
     } catch (error) {
       res.status(500).json({
+        success:false,
         message: "Error creating product",
         error: error.message,
       });
@@ -279,7 +282,7 @@ const updateProduct = async (req, res) => {
         _id: productId,
       });
       if (!product) {
-        return res.status(404).json({ message: "Product not found" });
+        return res.status(404).json({success:false, message: "Product not found" });
       }
 
       const files = req.files || {};
@@ -290,7 +293,7 @@ const updateProduct = async (req, res) => {
       if (productImagesFiles.length > 0 && productImagesFiles.length === 0) {
         return res
           .status(400)
-          .json({ message: "At least one product image is required" });
+          .json({success:false, message: "At least one product image is required" });
       }
 
       const mainImagePath = mainImage
@@ -348,7 +351,7 @@ const updateProduct = async (req, res) => {
             console.error("Error processing product image thumbnail:", err);
             return res
               .status(500)
-              .json({ message: "Error processing thumbnail" });
+              .json({success:false, message: "Error processing thumbnail" });
           }
         }
 
@@ -402,12 +405,14 @@ const updateProduct = async (req, res) => {
       await product.save();
 
       res.status(200).json({
+        success:true,
         message: "Product updated successfully",
         data: product,
       });
     } catch (error) {
       console.error("Error updating product:", error);
       res.status(500).json({
+        success:false,
         message: "Error updating product",
         error: error.message,
       });
@@ -420,12 +425,14 @@ const getAllProducts = async (req, res) => {
     const products = await ProductDataModel.find({}).lean();
 
     res.status(200).json({
+      success:true,
       message: "Products retrieved successfully",
       data: products,
     });
   } catch (error) {
     console.error("Error retrieving products:", error);
     res.status(500).json({
+      success:false,
       message: "Error retrieving products",
       error: error.message,
     });
@@ -437,12 +444,12 @@ const deleteProduct = async (req, res) => {
     const { productId } = req.body;
 
     if (!productId) {
-      return res.status(400).json({ message: "ProductId is required" });
+      return res.status(400).json({ success:false, message: "ProductId is required" });
     }
 
     const product = await ProductDataModel.findById(productId);
     if (!product) {
-      return res.status(404).json({ message: "Product not found" });
+      return res.status(404).json({success:false, message: "Product not found" });
     }
 
     product.isDeleted = !product.isDeleted;
@@ -450,6 +457,7 @@ const deleteProduct = async (req, res) => {
     await product.save();
 
     res.status(200).json({
+      success:true,
       message: "Product isDeleted status updated successfully",
       data: {
         _id: product._id,
@@ -459,6 +467,7 @@ const deleteProduct = async (req, res) => {
   } catch (error) {
     console.error("Error toggling product isDeleted:", error);
     res.status(500).json({
+      success:false,
       message: "Error toggling product isDeleted",
       error: error.message,
     });
@@ -502,6 +511,7 @@ const addProductsHomepage = async (req, res) => {
 
     if (homePage) {
       return res.status(400).json({
+        success:false,
         message: "Cannot add products structure again, instead update it",
       });
     }
@@ -518,12 +528,14 @@ const addProductsHomepage = async (req, res) => {
     await newHomePage.save();
 
     res.status(201).json({
+      success:true,
       message: "products data added successfully",
       data: newHomePage.content.products,
     });
   } catch (error) {
     console.error("Error adding products data:", error);
     res.status(500).json({
+      success:false,
       message: "Error adding products data",
       error: error.message,
     });
@@ -550,7 +562,7 @@ const updateHomepageProducts = async (req, res) => {
       structure_type: "products",
     });
     if (!homePage) {
-      return res.status(404).json({ message: "Products section not found" });
+      return res.status(404).json({success:false, message: "Products section not found" });
     }
 
     if (transformedData !== undefined) {
@@ -562,12 +574,14 @@ const updateHomepageProducts = async (req, res) => {
     await homePage.save();
 
     res.status(200).json({
+      success:true,
       message: "Products data updated successfully",
       data: homePage.content.products,
     });
   } catch (error) {
     console.error("Error updating products data:", error);
     res.status(500).json({
+      success:false,
       message: "Error updating products data",
       error: error.message,
     });
@@ -579,14 +593,14 @@ const productsVisibility = async (req, res) => {
     const { productId } = req.body;
 
     if (!productId) {
-      return res.status(400).json({ message: "ProductId is required" });
+      return res.status(400).json({success:false, message: "ProductId is required" });
     }
 
     const homePage = await HomePageDataModel.findOne({
       structure_type: "products",
     });
     if (!homePage) {
-      return res.status(404).json({ message: "products section not found" });
+      return res.status(404).json({success:false, message: "products section not found" });
     }
 
     const itemIndex = homePage.content.products.data.findIndex(
@@ -594,7 +608,7 @@ const productsVisibility = async (req, res) => {
     );
 
     if (itemIndex < 0) {
-      return res.status(404).json({ message: "Products item not found" });
+      return res.status(404).json({success:false, message: "Products item not found" });
     }
 
     homePage.content.products.data[itemIndex].isHidden =
@@ -603,12 +617,14 @@ const productsVisibility = async (req, res) => {
     await homePage.save();
 
     res.status(200).json({
+      success:true,
       message: "Products visibility updated successfully",
       data: homePage.content.products.data[itemIndex],
     });
   } catch (error) {
     console.error("Error updating products visibility:", error);
     res.status(500).json({
+      success:false,
       message: "Error updating products visibility",
       error: error.message,
     });
@@ -621,7 +637,7 @@ const getAllHomepageProducts = async (req, res) => {
       structure_type: "products",
     });
     if (!homePage || !homePage.content.products) {
-      return res.status(404).json({ message: "Products section not found" });
+      return res.status(404).json({success:false, message: "Products section not found" });
     }
 
     const productIds = homePage.content.products.data.map((item) => item.id);
@@ -654,6 +670,7 @@ const getAllHomepageProducts = async (req, res) => {
       .filter((item) => item !== null);
 
     res.status(200).json({
+      success:true,
       structure: "products",
       data,
       title: homePage.content.products.section_title,
@@ -661,6 +678,7 @@ const getAllHomepageProducts = async (req, res) => {
   } catch (error) {
     console.error("Error retrieving all products data:", error);
     res.status(500).json({
+      success:false,
       message: "Error retrieving all products data",
       error: error.message,
     });

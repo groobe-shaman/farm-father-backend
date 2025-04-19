@@ -41,6 +41,7 @@ const addOurImpact = async (req, res) => {
   upload(req, res, async function (error) {
     if (error instanceof multer.MulterError || error) {
       return res.status(400).json({
+        success:false,
         message: "File upload error",
         error: error.message,
       });
@@ -51,6 +52,7 @@ const addOurImpact = async (req, res) => {
 
       if (!data || !Array.isArray(data) || data.length === 0) {
         return res.status(400).json({
+          success:false,
           message: "data array is required and must not be empty",
         });
       }
@@ -131,6 +133,7 @@ const addOurImpact = async (req, res) => {
       });
       if (existingImpact) {
         return res.status(400).json({
+          success:false,
           message: "Cannot add our_impact structure again, instead update it",
         });
       }
@@ -152,12 +155,14 @@ const addOurImpact = async (req, res) => {
       await newImpact.save();
 
       res.status(201).json({
+        success:true,
         message: "Our Impact data added successfully",
         data: newImpact.content.our_impact,
       });
     } catch (error) {
       console.error("Error adding Our Impact data:", error);
       res.status(500).json({
+        success:false,
         message: "Error adding Our Impact data",
         error: error.message,
       });
@@ -182,6 +187,7 @@ const updateOurImpact = async (req, res) => {
       });
       if (!impact) {
         return res.status(404).json({
+          success:false,
           message: "Our Impact section not found",
         });
       }
@@ -333,12 +339,14 @@ const updateOurImpact = async (req, res) => {
       await impact.save();
 
       res.status(200).json({
+        success:true,
         message: "Our Impact data updated successfully",
         data: impact.content.our_impact,
       });
     } catch (error) {
       console.error("Error updating Our Impact data:", error);
       res.status(500).json({
+        success:false,
         message: "Error updating Our Impact data",
         error: error.message,
       });
@@ -353,16 +361,19 @@ const getOurImpact = async (req, res) => {
       });
       if (!impact || !impact.content.our_impact) {
         return res.status(404).json({
+          success:false,
           message: "Our Impact section not found",
         });
       }
   
       res.status(200).json({
+        success:true,
         data: impact.content.our_impact,
       });
     } catch (error) {
       console.error("Error fetching Our Impact data:", error);
       res.status(500).json({
+        success:false,
         message: "Error fetching Our Impact data",
         error: error.message,
       });
