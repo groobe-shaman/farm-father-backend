@@ -219,7 +219,7 @@ const getAboutUs = async (req, res) => {
     }
 
     res.status(200).json({
-      success:tfs.runcateSync,
+      success:true,
       data: data.content.about_us,
     });
   } catch (error) {
