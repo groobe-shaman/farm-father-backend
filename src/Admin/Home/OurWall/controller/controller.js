@@ -92,12 +92,13 @@ const addOurWallHomepage = async (req, res) => {
           !item ||
           !item.name ||
           !item.rating ||
+          !item.review ||
           !item.location ||
           !imageFile
         ) {
           return res.status(400).json({
             success:false,
-            message: `All fields (image, name, rating , location) are required for data[${i}]`,
+            message: `All fields (image, name, rating, review, location) are required for data[${i}]`,
           });
         }
 
@@ -105,6 +106,7 @@ const addOurWallHomepage = async (req, res) => {
           image: `home/our_wall_images/${imageFile.filename}`,
           name: item.name,
           rating: item.rating,
+          review: item.review,
           location: item.location,
         });
       }
@@ -187,10 +189,10 @@ const updateOurWallHomepage = async (req, res) => {
         const fileKey = `data[${i}][image]`;
         const imageFile = files[fileKey]?.[0];
 
-        if (!item || !item.name || !item.rating || !item.location) {
+        if (!item || !item.name || !item.rating|| !item.review || !item.location) {
           return res.status(400).json({
             success:false,
-            message: `All fields (name, rating, location) are required for data[${i}]`,
+            message: `All fields (name, rating, review, location) are required for data[${i}]`,
           });
         }
 
@@ -208,6 +210,7 @@ const updateOurWallHomepage = async (req, res) => {
         updatedData.push({
           name: item.name,
           rating: item.rating,
+          review: item.review,
           location: item.location,
           image: imagePath,
         });
