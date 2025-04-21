@@ -24,6 +24,7 @@ const getHomepageProducts= async (req, res) => {
     
         const products = await ProductDataModel.find({
           _id: { $in: visibleProductIds },
+          isDeleted:false,
         }).select("highlight_media description title product_text_color");
     
         const data = homePage.content.products.data

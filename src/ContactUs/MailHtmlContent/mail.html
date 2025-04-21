@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank You for Your Query - FarmFather</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #FFFFFF; /* Secondary color */
+    }
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #FFFAE3;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+      background-color: #064A2A; /* Primary color */
+      padding: 20px;
+      text-align: center;
+      color: #ffffff;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 22px;
+      font-family: 'Outfit', Arial, Helvetica, sans-serif;
+    }
+    .content {
+      padding: 20px;
+      line-height: 1.6;
+      color: #333333;
+    }
+    .content p {
+      margin: 0 0 15px;
+    }
+    .content .user-name {
+      font-weight: bold;
+      color: #064A2A; /* Primary color */
+    }
+    .footer {
+      background-color: #FFFAE3; /* Secondary color */
+      padding: 15px;
+      text-align: center;
+      font-size: 12px;
+      color: #666666;
+    }
+    .footer a {
+      color: #064A2A; /* Primary color */
+      text-decoration: none;
+      margin: 0 5px;
+    }
+    .footer a:hover {
+      text-decoration: underline;
+    }
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 15px 0;
+      background-color: #064A2A; /* Primary color */
+      color: #ffffff !important;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+    .contact-section {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .contact-section span {
+      color: #666666;
+      margin: 0 5px;
+    }
+    .company-name {
+      margin-top: 10px;
+    }
+    @media only screen and (max-width: 600px) {
+      .container {
+        width: 100%;
+        margin: 10px;
+      }
+      .header h1 {
+        font-size: 20px;
+      }
+      .content {
+        padding: 15px;
+      }
+      .contact-section {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Thank You for Reaching Out to FarmFather!</h1>
+    </div>
+    <div class="content">
+      <p>Dear <span class="user-name">${user_name}</span>,</p>
+      <p>Thank you for submitting your query to FarmFather. We're thrilled to hear from you and appreciate your interest in our premium dehydrated Gourmet Sprouts and ready-to-use Chilla and Pancake mixes, crafted for HoReCa, Cloud Kitchens, and QSRs.</p>
+      <p>Your query has been received, and our team is reviewing it carefully. We'll get back to you within the next 24-48 hours with a tailored response or any additional details we might need to serve you better.</p>
+      <p>In the meantime, explore our range of innovative, high-quality ingredients designed to elevate your culinary creations with ease and flavor.</p>
+      <a href="https://farmfather.in/" class="button">Discover FarmFather Products</a>
+    </div>
+    <div class="footer">
+      <p>Best regards,<br>The FarmFather Team</p>
+      <div class="contact-section">
+        <span>Contact Us At:</span> 
+        <a href="tel:+919056130982">+91 9056130982</a> | 
+        <a href="mailto:Info@aviskaexport.com">Info@aviskaexport.com</a>
+      </div>
+      <p class="company-name">© Aviska Group</p>
+    </div>
+  </div>
+</body>
+</html>

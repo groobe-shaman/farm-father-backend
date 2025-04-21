@@ -3,18 +3,20 @@
     "structure": "banner",
     "data": [
       {
+        "title": "",
+        "description": "",
         "thumbnail_image": "image1",
         "banner_image": "image1",
         "product_color": "color1"
       },
       {
+        "title": "",
+        "description": "",
         "thumbnail_image": "image2",
         "banner_image": "image2",
         "product_color": "color2"
       }
-    ],
-    "title": "",
-    "description": ""
+    ]
   },
   {
     "structure": "essence",
