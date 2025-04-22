@@ -210,10 +210,10 @@ const updateHowToUseHomepage = async (req, res) => {
             message: `Image for data[${i}] is required and no existing image found`,
           });
         }
-
+    
         updatedData.push({
           title: item.title,
-          subt_title: item.sub_title,
+          sub_title: item.sub_title,
           description: item.description,
           image: imagePath,
         });
