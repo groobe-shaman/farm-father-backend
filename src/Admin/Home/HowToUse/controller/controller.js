@@ -91,7 +91,7 @@ const addHowToUseHomepage = async (req, res) => {
 
       const finalData = [];
 
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 6; i++) {
         const fileKey = `data[${i}][image]`;
         const imageFile = files[fileKey]?.[0];
         const item = dataArray[i];
@@ -189,7 +189,7 @@ const updateHowToUseHomepage = async (req, res) => {
 
       const updatedData = [];
 
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < 6; i++) {
         const item = dataArray[i];
         const fileKey = `data[${i}][image]`;
         const imageFile = files[fileKey]?.[0];
