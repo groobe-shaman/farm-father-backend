@@ -22,6 +22,7 @@ const upload = multer({
   },
 }).fields([
   { name: "thumbnail_image", maxCount: 1 },
+  { name: "title_image", maxCount: 1 },
   { name: "banner_image", maxCount: 1 },
 ]);
 
@@ -48,6 +49,7 @@ const addBanner = async (req, res) => {
         title,
         description,
         product_color,
+        title_image: req.files["title_image"]?.[0] ? `banner_images/${req.files["title_image"][0].filename}` : "",
         thumbnail_image: req.files["thumbnail_image"]?.[0] ? `banner_images/${req.files["thumbnail_image"][0].filename}` : "",
         banner_image: req.files["banner_image"]?.[0] ? `banner_images/${req.files["banner_image"][0].filename}` : "",
       });
@@ -61,6 +63,7 @@ const addBanner = async (req, res) => {
           title: newBanner.title,
           product_color:newBanner.product_color,
           description: newBanner.description,
+          title_image:newBanner.title_image,
           thumbnail_image: newBanner.thumbnail_image,
           banner_image: newBanner.banner_image,
         },
@@ -107,6 +110,7 @@ const updateBanner = async (req, res) => {
       banner.title = title || banner.title;
       banner.description = description || banner.description;
       banner.product_color= product_color || banner.product_color;
+      banner.title_image = req.files["title_image"]?.[0] ? `banner_images/${req.files["title_image"][0].filename}` : banner.title_image;
       banner.thumbnail_image = req.files["thumbnail_image"]?.[0] ? `banner_images/${req.files["thumbnail_image"][0].filename}` : banner.thumbnail_image;
       banner.banner_image = req.files["banner_image"]?.[0] ? `banner_images/${req.files["banner_image"][0].filename}` : banner.banner_image;
     
@@ -120,6 +124,7 @@ const updateBanner = async (req, res) => {
           title: banner.title,
           description: banner.description,
           product_color:banner.product_color,
+          title_image: banner.title_image,
           thumbnail_image: banner.thumbnail_image,
           banner_image: banner.banner_image,
         },
@@ -144,6 +149,7 @@ const getAllBanners = async (req, res) => {
         title: banner.title,
         description: banner.description,
         product_color:banner.product_color,
+        title_image: banner.title_image,
         thumbnail_image: banner.thumbnail_image,
         banner_image: banner.banner_image,
         createdAt: banner.createdAt,
@@ -184,6 +190,7 @@ const getBannerById = async (req, res) => {
         title: banner.title,
         description: banner.description,
         product_color:banner.product_color,
+        title_image: banner.title_image,
         thumbnail_image: banner.thumbnail_image,
         banner_image: banner.banner_image,
         createdAt: banner.createdAt,
