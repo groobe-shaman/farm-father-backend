@@ -25,13 +25,13 @@ const getHomepageBanners = async (req, res) => {
     const banners = await BannerDataModel.find({
       _id: { $in: visibleBannerIds },
     })
-
-   
-
+    const sortedBanners = banners.sort(
+      (a, b) => (a.sort_id || 0) - (b.sort_id || 0)
+    );
     res.status(200).json({
       success:true,
       structure: "banner",
-      data:banners,
+      data:sortedBanners,
     });
   } catch (error) {
     console.error("Error retrieving banner data:", error);

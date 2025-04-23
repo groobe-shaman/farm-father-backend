@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const BannerSchema = new mongoose.Schema(
     {
+      sort_id:{type:Number,required:true},
       title: { type: String, required: true },
       title_image: { type: String, required: true },
       description: { type: String, required: true },
