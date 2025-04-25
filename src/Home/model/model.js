@@ -199,6 +199,7 @@ const SettingsSchema = new mongoose.Schema(
         platform: { type: String, required: true },
         icon: { type: String },
         link: { type: String },
+        isHidden:{type:Boolean,default:false}
       },
     ],
     company_details: {

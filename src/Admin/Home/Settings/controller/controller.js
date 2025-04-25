@@ -227,8 +227,61 @@ const getSettings = async (req, res) => {
     }
   };
 
+  
+  const toggleSocialMediaVisibility = async (req, res) => {
+    const { platform } = req.body;
+  
+    if (!platform) {
+      return res.status(400).json({
+        success: false,
+        message: "Platform is required",
+      });
+    }
+  
+    try {
+      const settingsDoc = await HomePageDataModel.findOne({
+        structure_type: "settings",
+      });
+  
+      if (!settingsDoc) {
+        return res.status(404).json({
+          success: false,
+          message: "Settings section not found",
+        });
+      }
+  
+      const link = settingsDoc.content.settings.social_media_links.find(
+        (item) => item.platform === platform
+      );
+  
+      if (!link) {
+        return res.status(404).json({
+          success: false,
+          message: `No social media link found for platform: ${platform}`,
+        });
+      }
+  
+      link.isHidden = !link.isHidden;
+  
+      await settingsDoc.save();
+  
+      res.status(200).json({
+        success: true,
+        message: `Visibility for ${platform} updated successfully`,
+        data: link,
+      });
+    } catch (error) {
+      console.error("Error toggling social media visibility:", error);
+      res.status(500).json({
+        success: false,
+        message: "Internal server error",
+        error: error.message,
+      });
+    }
+  };
 module.exports = {
   addSettings,
   updateSettings,
   getSettings,
+  toggleSocialMediaVisibility
 };
