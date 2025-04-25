@@ -106,12 +106,16 @@ const OurImpactSchema = new mongoose.Schema(
       {
         desktop: {
           image: { type: String, default: "" },
+          title: { type: String, default: "" },
+          description: { type: String, default: "" },
           cta_button_name: { type: String, default: "" },
           cta_button_color: { type: String, default: "" },
           cta_button_link: { type: String, default: "" },
         },
         mobile: {
           image: { type: String, default: "" },
+          title: { type: String, default: "" },
+          description: { type: String, default: "" },
           cta_button_name: { type: String, default: "" },
           cta_button_color: { type: String, default: "" },
           cta_button_link: { type: String, default: "" },
@@ -122,12 +126,16 @@ const OurImpactSchema = new mongoose.Schema(
       {
         desktop: {
           image: { type: String, default: "" },
+          title: { type: String, default: "" },
+          description: { type: String, default: "" },
           cta_button_name: { type: String, default: "" },
           cta_button_color: { type: String, default: "" },
           cta_button_link: { type: String, default: "" },
         },
         mobile: {
           image: { type: String, default: "" },
+          title: { type: String, default: "" },
+          description: { type: String, default: "" },
           cta_button_name: { type: String, default: "" },
           cta_button_color: { type: String, default: "" },
           cta_button_link: { type: String, default: "" },
@@ -187,7 +195,7 @@ const SettingsSchema = new mongoose.Schema(
   {
     social_media_links: [
       {
-        platform: { type: String, required: true }, 
+        platform: { type: String, required: true },
         icon: { type: String },
         link: { type: String },
       },

@@ -41,7 +41,7 @@ const addOurImpact = async (req, res) => {
   upload(req, res, async function (error) {
     if (error instanceof multer.MulterError || error) {
       return res.status(400).json({
-        success:false,
+        success: false,
         message: "File upload error",
         error: error.message,
       });
@@ -52,7 +52,7 @@ const addOurImpact = async (req, res) => {
 
       if (!data || !Array.isArray(data) || data.length === 0) {
         return res.status(400).json({
-          success:false,
+          success: false,
           message: "data array is required and must not be empty",
         });
       }
@@ -81,6 +81,9 @@ const addOurImpact = async (req, res) => {
             image: req.files["left_small_image[0][desktop][image]"]?.[0]
               ? `home/our_impact_images/${req.files["left_small_image[0][desktop][image]"][0].filename}`
               : "",
+            title: req.body.left_small_image?.[0]?.desktop?.title || "",
+            description:
+              req.body.left_small_image?.[0]?.desktop?.description || "",
             cta_button_name:
               req.body.left_small_image?.[0]?.desktop?.cta_button_name || "",
             cta_button_color:
@@ -92,6 +95,9 @@ const addOurImpact = async (req, res) => {
             image: req.files["left_small_image[0][mobile][image]"]?.[0]
               ? `home/our_impact_images/${req.files["left_small_image[0][mobile][image]"][0].filename}`
               : "",
+            title: req.body.left_small_image?.[0]?.mobile?.title || "",
+            description:
+              req.body.left_small_image?.[0]?.mobile?.description || "",
             cta_button_name:
               req.body.left_small_image?.[0]?.mobile?.cta_button_name || "",
             cta_button_color:
@@ -107,6 +113,9 @@ const addOurImpact = async (req, res) => {
             image: req.files["right_small_image[0][desktop][image]"]?.[0]
               ? `home/our_impact_images/${req.files["right_small_image[0][desktop][image]"][0].filename}`
               : "",
+            title: req.body.right_small_image?.[0]?.desktop?.title || "",
+            description:
+              req.body.right_small_image?.[0]?.desktop?.description || "",
             cta_button_name:
               req.body.right_small_image?.[0]?.desktop?.cta_button_name || "",
             cta_button_color:
@@ -118,6 +127,9 @@ const addOurImpact = async (req, res) => {
             image: req.files["right_small_image[0][mobile][image]"]?.[0]
               ? `home/our_impact_images/${req.files["right_small_image[0][mobile][image]"][0].filename}`
               : "",
+            title: req.body.right_small_image?.[0]?.mobile?.title || "",
+            description:
+              req.body.right_small_image?.[0]?.mobile?.description || "",
             cta_button_name:
               req.body.right_small_image?.[0]?.mobile?.cta_button_name || "",
             cta_button_color:
@@ -133,7 +145,7 @@ const addOurImpact = async (req, res) => {
       });
       if (existingImpact) {
         return res.status(400).json({
-          success:false,
+          success: false,
           message: "Cannot add our_impact structure again, instead update it",
         });
       }
@@ -155,14 +167,14 @@ const addOurImpact = async (req, res) => {
       await newImpact.save();
 
       res.status(201).json({
-        success:true,
+        success: true,
         message: "Our Impact data added successfully",
         data: newImpact.content.our_impact,
       });
     } catch (error) {
       console.error("Error adding Our Impact data:", error);
       res.status(500).json({
-        success:false,
+        success: false,
         message: "Error adding Our Impact data",
         error: error.message,
       });
@@ -187,7 +199,7 @@ const updateOurImpact = async (req, res) => {
       });
       if (!impact) {
         return res.status(404).json({
-          success:false,
+          success: false,
           message: "Our Impact section not found",
         });
       }
@@ -240,6 +252,15 @@ const updateOurImpact = async (req, res) => {
                 ? `home/our_impact_images/${req.files["left_small_image[0][desktop][image]"][0].filename}`
                 : impact.content.our_impact.left_small_image[0]?.desktop
                     ?.image || "",
+              title:
+                req.body.left_small_image[0]?.desktop?.title ||
+                impact.content.our_impact.left_small_image[0]?.desktop?.title ||
+                "",
+              description:
+                req.body.left_small_image[0]?.desktop?.description ||
+                impact.content.our_impact.left_small_image[0]?.desktop
+                  ?.description ||
+                "",
               cta_button_name:
                 req.body.left_small_image[0]?.desktop?.cta_button_name ||
                 impact.content.our_impact.left_small_image[0]?.desktop
@@ -261,6 +282,15 @@ const updateOurImpact = async (req, res) => {
                 ? `home/our_impact_images/${req.files["left_small_image[0][mobile][image]"][0].filename}`
                 : impact.content.our_impact.left_small_image[0]?.mobile
                     ?.image || "",
+              title:
+                req.body.left_small_image[0]?.mobile?.title ||
+                impact.content.our_impact.left_small_image[0]?.mobile?.title ||
+                "",
+              description:
+                req.body.left_small_image[0]?.mobile?.description ||
+                impact.content.our_impact.left_small_image[0]?.mobile
+                  ?.description ||
+                "",
               cta_button_name:
                 req.body.left_small_image[0]?.mobile?.cta_button_name ||
                 impact.content.our_impact.left_small_image[0]?.mobile
@@ -292,6 +322,16 @@ const updateOurImpact = async (req, res) => {
                 ? `home/our_impact_images/${req.files["right_small_image[0][desktop][image]"][0].filename}`
                 : impact.content.our_impact.right_small_image[0]?.desktop
                     ?.image || "",
+              title:
+                req.body.right_small_image[0]?.desktop?.title ||
+                impact.content.our_impact.right_small_image[0]?.desktop
+                  ?.title ||
+                "",
+              description:
+                req.body.right_small_image[0]?.desktop?.description ||
+                impact.content.our_impact.right_small_image[0]?.desktop
+                  ?.description ||
+                "",
               cta_button_name:
                 req.body.right_small_image[0]?.desktop?.cta_button_name ||
                 impact.content.our_impact.right_small_image[0]?.desktop
@@ -313,6 +353,15 @@ const updateOurImpact = async (req, res) => {
                 ? `home/our_impact_images/${req.files["right_small_image[0][mobile][image]"][0].filename}`
                 : impact.content.our_impact.right_small_image[0]?.mobile
                     ?.image || "",
+              title:
+                req.body.right_small_image[0]?.mobile?.title ||
+                impact.content.our_impact.right_small_image[0]?.mobile?.title ||
+                "",
+              description:
+                req.body.right_small_image[0]?.mobile?.description ||
+                impact.content.our_impact.right_small_image[0]?.mobile
+                  ?.description ||
+                "",
               cta_button_name:
                 req.body.right_small_image[0]?.mobile?.cta_button_name ||
                 impact.content.our_impact.right_small_image[0]?.mobile
@@ -339,14 +388,14 @@ const updateOurImpact = async (req, res) => {
       await impact.save();
 
       res.status(200).json({
-        success:true,
+        success: true,
         message: "Our Impact data updated successfully",
         data: impact.content.our_impact,
       });
     } catch (error) {
       console.error("Error updating Our Impact data:", error);
       res.status(500).json({
-        success:false,
+        success: false,
         message: "Error updating Our Impact data",
         error: error.message,
       });
@@ -355,33 +404,33 @@ const updateOurImpact = async (req, res) => {
 };
 
 const getOurImpact = async (req, res) => {
-    try {
-      const impact = await HomePageDataModel.findOne({
-        structure_type: "our_impact",
-      });
-      if (!impact || !impact.content.our_impact) {
-        return res.status(404).json({
-          success:false,
-          message: "Our Impact section not found",
-        });
-      }
-  
-      res.status(200).json({
-        success:true,
-        data: impact.content.our_impact,
-      });
-    } catch (error) {
-      console.error("Error fetching Our Impact data:", error);
-      res.status(500).json({
-        success:false,
-        message: "Error fetching Our Impact data",
-        error: error.message,
+  try {
+    const impact = await HomePageDataModel.findOne({
+      structure_type: "our_impact",
+    });
+    if (!impact || !impact.content.our_impact) {
+      return res.status(404).json({
+        success: false,
+        message: "Our Impact section not found",
       });
     }
-  };
+
+    res.status(200).json({
+      success: true,
+      data: impact.content.our_impact,
+    });
+  } catch (error) {
+    console.error("Error fetching Our Impact data:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching Our Impact data",
+      error: error.message,
+    });
+  }
+};
 
 module.exports = {
   addOurImpact,
   updateOurImpact,
-  getOurImpact
+  getOurImpact,
 };
