@@ -27,7 +27,7 @@ const getHomepageProducts = async (req, res) => {
     const products = await ProductDataModel.find({
       _id: { $in: visibleProductIds },
       isDeleted: false,
-    }).select("highlight_media description title product_text_color sort_id");
+    }).select("highlight_media sub_title title product_text_color sort_id");
    
     const sortedProducts = products.sort(
       (a, b) => (a.sort_id || 0) - (b.sort_id || 0)
@@ -35,7 +35,7 @@ const getHomepageProducts = async (req, res) => {
     
     const data = sortedProducts.map((product) => ({
       higlight_media: product.highlight_media,
-      description: product.description,
+      sub_title: product.sub_title,
       title: product.title,
       product_text_color: product.product_text_color,
     }));
