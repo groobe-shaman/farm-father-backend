@@ -161,6 +161,7 @@ const AboutUsSchema = new mongoose.Schema(
         },
         icon: { type: String, default: "" },
         link: { type: String, default: "" },
+        isHidden:{type:Boolean,default:false},
       },
     ],
   },
