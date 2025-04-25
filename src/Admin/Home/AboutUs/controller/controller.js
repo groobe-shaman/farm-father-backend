@@ -97,7 +97,7 @@ const addAboutUs = async (req, res) => {
 
       if (existingData) {
         return res.status(400).json({
-          success:false,
+          success: false,
           message: "About us section already exists. Please update it instead.",
         });
       }
@@ -117,14 +117,14 @@ const addAboutUs = async (req, res) => {
       await newData.save();
 
       res.status(201).json({
-        success:true,
+        success: true,
         message: "About Us section added successfully",
         data: newData.content.about_us,
       });
     } catch (error) {
       console.error("Error adding About Us data:", error);
       res.status(500).json({
-        success:false,
+        success: false,
         message: "Error adding About Us data",
         error: error.message,
       });
@@ -147,7 +147,9 @@ const updateAboutUs = async (req, res) => {
       });
 
       if (!data) {
-        return res.status(404).json({success:false, message: "About Us section not found" });
+        return res
+          .status(404)
+          .json({ success: false, message: "About Us section not found" });
       }
 
       const section_title =
@@ -193,14 +195,14 @@ const updateAboutUs = async (req, res) => {
       await data.save();
 
       res.status(200).json({
-        success:true,
+        success: true,
         message: "About Us section updated successfully",
         data: data.content.about_us,
       });
     } catch (error) {
       console.error("Error updating About Us data:", error);
       res.status(500).json({
-        success:false,
+        success: false,
         message: "Error updating About Us data",
         error: error.message,
       });
@@ -215,25 +217,79 @@ const getAboutUs = async (req, res) => {
     });
 
     if (!data || !data.content.about_us) {
-      return res.status(404).json({success:false, message: "About Us section not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "About Us section not found" });
     }
 
     res.status(200).json({
-      success:true,
+      success: true,
       data: data.content.about_us,
     });
   } catch (error) {
     console.error("Error fetching About Us data:", error);
     res.status(500).json({
-      success:false,
+      success: false,
       message: "Error fetching About Us data",
       error: error.message,
     });
   }
 };
 
+const toggleSocialMediaVisibility = async (req, res) => {
+  const { platform } = req.body;
+
+  if (!platform) {
+    return res.status(400).json({
+      success: false,
+      message: "Platform is required",
+    });
+  }
+
+  try {
+    const aboutUsDoc = await HomePageDataModel.findOne({
+      structure_type: "about_us",
+    });
+
+    if (!aboutUsDoc) {
+      return res.status(404).json({
+        success: false,
+        message: "About Us section not found",
+      });
+    }
+
+    const link = aboutUsDoc.content.about_us.social_media_links.find(
+      (item) => item.platform === platform
+    );
+
+    if (!link) {
+      return res.status(404).json({
+        success: false,
+        message: `No social media link found for platform: ${platform}`,
+      });
+    }
+
+    link.isHidden = !link.isHidden;
+
+    await aboutUsDoc.save();
+
+    res.status(200).json({
+      success: true,
+      message: `Visibility for ${platform} updated successfully`,
+      data: link,
+    });
+  } catch (error) {
+    console.error("Error toggling social media visibility:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
 module.exports = {
   addAboutUs,
   updateAboutUs,
   getAboutUs,
+  toggleSocialMediaVisibility,
 };
