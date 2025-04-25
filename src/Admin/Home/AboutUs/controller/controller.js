@@ -32,7 +32,7 @@ const upload = multer({
   { name: "cta_button_facebook_icon", maxCount: 1 },
   { name: "cta_button_instagram_icon", maxCount: 1 },
   { name: "cta_button_linkedin_icon", maxCount: 1 },
-  { name: "cta_button_pintrest_icon", maxCount: 1 },
+  { name: "cta_button_pinterest_icon", maxCount: 1 },
   { name: "about_us_image", maxCount: 1 },
 ]);
 
@@ -80,10 +80,10 @@ const addAboutUs = async (req, res) => {
         },
         {
           platform: "pinterest",
-          icon: req.files["cta_button_pintrest_icon"]?.[0]?.filename
-            ? `home/aboutus_images/${req.files["cta_button_pintrest_icon"][0].filename}`
+          icon: req.files["cta_button_pinterest_icon"]?.[0]?.filename
+            ? `home/aboutus_images/${req.files["cta_button_pinterest_icon"][0].filename}`
             : "",
-          link: req.body.cta_button_pintrest_link || "",
+          link: req.body.cta_button_pinterest_link || "",
         },
       ];
 
