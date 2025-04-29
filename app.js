@@ -57,6 +57,7 @@ const AboutUsRouter=require('./src/Home/AboutUs/router/router')
 const HowToUseRouter=require('./src/Home/HowToUse/router/router')
 const OurImpactRouter=require('./src/Home/OurImpact/router/router')
 const PolicyRouter=require("./src/Home/Policies/router/router")
+const RecaptchaRouter=require("./src/Recaptcha/router/router")
 
 app.use(
   "/api/v1/admin",
@@ -92,6 +93,7 @@ app.use("/api/v1/aboutus",AboutUsRouter)
 app.use("/api/v1/howtouse",HowToUseRouter)
 app.use("/api/v1/ourimpact",OurImpactRouter)
 app.use("/api/v1/policies/",PolicyRouter)
+app.use("/api/v1/recaptcha",RecaptchaRouter)
 
 const PORT = process.env.PORT || 3000;
 
