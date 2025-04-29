@@ -26,12 +26,12 @@ const upload = multer({
             "main_image"
           );
           break;
-        case "banner_image":
+          case "features_icon":
           uploadPath = path.join(
             process.cwd(),
             "public",
             "product",
-            "banner_image"
+            "features_icon"
           );
           break;
         case "highlight_media":
@@ -48,14 +48,6 @@ const upload = multer({
             "public",
             "product",
             "product_images"
-          );
-          break;
-        case "thumbnail_image":
-          uploadPath = path.join(
-            process.cwd(),
-            "public",
-            "product",
-            "thumbnail_image"
           );
           break;
         default:
@@ -75,6 +67,7 @@ const upload = multer({
 }).fields([
   { name: "main_image", maxCount: 1 },
   { name: "highlight_media", maxCount: 1 },
+  { name: "features_icon", maxCount: 1 },
   { name: "product_images", maxCount: 10 },
 ]);
 
@@ -108,38 +101,59 @@ const addProduct = async (req, res) => {
       const files = req.files || {};
       const mainImage = files.main_image?.[0];
       const highlightMedia = files.highlight_media?.[0];
+      const featuresIcon = files.features_icon?.[0];
       const productImagesFiles = files.product_images || [];
 
       if (!mainImage) {
-
-        return res.status(400).json({success:false, message: "Main image is required" });
-      }
-
-      if (!highlightMedia) {
-        return res.status(400).json({success:false, message: "Highlight media is required" });
-      }
-      if (productImagesFiles.length === 0) {
         return res
           .status(400)
-          .json({success:false, message: "At least one product image is required" });
+          .json({ success: false, message: "Main image is required" });
+      }
+
+      if (!featuresIcon) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Features icon is required" });
+      }
+      if (!highlightMedia) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Highlight media is required" });
+      }
+      if (productImagesFiles.length === 0) {
+        return res.status(400).json({
+          success: false,
+          message: "At least one product image is required",
+        });
       }
 
       const mainImagePath = `product/main_image/${mainImage.filename}`;
+      const featuresIconPath = `product/features_icon/${featuresIcon.filename}`;
       const highlightMediaPath = `product/highlight_media/${highlightMedia.filename}`;
       const productImages = productImagesFiles.map(
         (file) => `product/product_images/${file.filename}`
       );
 
       if (!mainImagePath) {
-        return res.status(400).json({success:false, message: "Main image is required" });
-      }
-      if (!highlightMediaPath) {
-        return res.status(400).json({success:false, message: "Highlight media is required" });
-      }
-      if (productImages.length === 0) {
         return res
           .status(400)
-          .json({ success:false,message: "At least one product image is required" });
+          .json({ success: false, message: "Main image is required" });
+      }
+      if (!featuresIconPath) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Features icon is required" });
+      }
+      if (!highlightMediaPath) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Highlight media is required" });
+      }
+      if (productImages.length === 0) {
+        return res.status(400).json({
+          success: false,
+          message: "At least one product image is required",
+        });
       }
 
       const featuresSubTitles = req.body.features_sub_titles
@@ -223,14 +237,15 @@ const addProduct = async (req, res) => {
           console.error("Error processing product image thumbnail:", err);
           return res
             .status(500)
-            .json({success:false, message: "Error processing thumbnail" });
+            .json({ success: false, message: "Error processing thumbnail" });
         }
       }
 
       if (thumbnailImages.length === 0) {
-        return res
-          .status(400)
-          .json({success:false, message: "At least one thumbnail image is required" });
+        return res.status(400).json({
+          success: false,
+          message: "At least one thumbnail image is required",
+        });
       }
 
       const productData = {
@@ -245,6 +260,7 @@ const addProduct = async (req, res) => {
         availability: availability,
         cta_buttons: ctaButtons,
         main_image: mainImagePath,
+        features_icon: featuresIconPath,
         highlight_media: highlightMediaPath,
         product_images: productImages,
         thumbnail_images: thumbnailImages,
@@ -255,13 +271,13 @@ const addProduct = async (req, res) => {
       await product.save();
 
       res.status(201).json({
-        success:true,
+        success: true,
         message: "Product created successfully",
         data: product,
       });
     } catch (error) {
       res.status(500).json({
-        success:false,
+        success: false,
         message: "Error creating product",
         error: error.message,
       });
@@ -278,36 +294,18 @@ const updateProduct = async (req, res) => {
     }
     try {
       const productId = req.params.productId;
-      const product = await ProductDataModel.findOne({
-        _id: productId,
-      });
+      const product = await ProductDataModel.findOne({ _id: productId });
       if (!product) {
-        return res.status(404).json({success:false, message: "Product not found" });
+        return res
+          .status(404)
+          .json({ success: false, message: "Product not found" });
       }
 
       const files = req.files || {};
       const mainImage = files.main_image?.[0];
+      const featuresIcon = files.features_icon?.[0];
       const highlightMedia = files.highlight_media?.[0];
       const productImagesFiles = files.product_images || [];
-
-      if (productImagesFiles.length > 0 && productImagesFiles.length === 0) {
-        return res
-          .status(400)
-          .json({success:false, message: "At least one product image is required" });
-      }
-
-      const mainImagePath = mainImage
-        ? `product/main_image/${mainImage.filename}`
-        : product.main_image;
-      const highlightMediaPath = highlightMedia
-        ? `product/highlight_media/${highlightMedia.filename}`
-        : product.highlight_media;
-      // const productImages =
-      //   productImagesFiles.length > 0
-      //     ? productImagesFiles.map(
-      //         (file) => `product/product_images/${file.filename}`
-      //       )
-      //     : product.product_images;
 
       let existingImages = req.body.existing_images
         ? typeof req.body.existing_images === "string"
@@ -315,16 +313,41 @@ const updateProduct = async (req, res) => {
           : req.body.existing_images
         : [];
       existingImages = Array.isArray(existingImages) ? existingImages : [];
+
       const updatedProductImages = product.product_images.filter((img) =>
         existingImages.includes(img)
       );
 
-      // let thumbnailImages = product.thumbnail_images;
+      const removedImages = product.product_images.filter(
+        (img) => !existingImages.includes(img)
+      );
+      for (const removed of removedImages) {
+        const oldPath = path.join(
+          __dirname,
+          "..",
+          "..",
+          "..",
+          "..",
+          "..",
+          "public",
+          removed
+        );
+        try {
+          await require("fs").promises.unlink(oldPath);
+        } catch (err) {
+          console.warn(
+            `Failed to delete removed product image: ${oldPath}`,
+            err.message
+          );
+        }
+      }
+
       if (productImagesFiles.length > 0) {
         const newImagePaths = productImagesFiles.map(
           (file) => `product/product_images/${file.filename}`
         );
         updatedProductImages.push(...newImagePaths);
+
         const thumbnailDir = path.join(
           process.cwd(),
           "public",
@@ -351,7 +374,7 @@ const updateProduct = async (req, res) => {
             console.error("Error processing product image thumbnail:", err);
             return res
               .status(500)
-              .json({success:false, message: "Error processing thumbnail" });
+              .json({ success: false, message: "Error processing thumbnail" });
           }
         }
 
@@ -367,16 +390,72 @@ const updateProduct = async (req, res) => {
         ];
       }
 
+      if (mainImage) {
+        const oldPath = path.join(
+          __dirname,
+          "..",
+          "..",
+          "..",
+          "..",
+          "..",
+          "public",
+          product.main_image
+        );
+        try {
+          await require("fs").promises.unlink(oldPath);
+        } catch (err) {
+          console.warn("Failed to delete old main image:", err.message);
+        }
+      }
+
+      if (featuresIcon) {
+        const oldPath = path.join(
+          __dirname,
+          "..",
+          "..",
+          "..",
+          "..",
+          "..",
+          "public",
+          product.features_icon
+        );
+        try {
+          await require("fs").promises.unlink(oldPath);
+        } catch (err) {
+          console.warn("Failed to delete old main image:", err.message);
+        }
+      }
+
+      if (highlightMedia) {
+        const oldPath = path.join(
+          __dirname,
+          "..",
+          "..",
+          "..",
+          "..",
+          "..",
+          "public",
+          product.highlight_media
+        );
+        try {
+          await require("fs").promises.unlink(oldPath);
+        } catch (err) {
+          console.warn("Failed to delete old highlight media:", err.message);
+        }
+      }
+
       const featuresSubTitles = req.body.features_sub_titles
         ? typeof req.body.features_sub_titles === "string"
           ? JSON.parse(req.body.features_sub_titles)
           : req.body.features_sub_titles
         : product.features_sub_titles;
+
       const availability = req.body.availability
         ? typeof req.body.availability === "string"
           ? JSON.parse(req.body.availability)
           : req.body.availability
         : product.availability;
+
       const ctaButtons = req.body.cta_buttons
         ? typeof req.body.cta_buttons === "string"
           ? JSON.parse(req.body.cta_buttons)
@@ -396,8 +475,15 @@ const updateProduct = async (req, res) => {
       product.ingredients = req.body.ingredients || product.ingredients;
       product.availability = availability;
       product.cta_buttons = ctaButtons;
-      product.main_image = mainImagePath;
-      product.highlight_media = highlightMediaPath;
+      product.main_image = mainImage
+        ? `product/main_image/${mainImage.filename}`
+        : product.main_image;
+      product.features_icon = featuresIcon
+        ? `product/features_icon/${featuresIcon.filename}`
+        : product.features_icon;
+      product.highlight_media = highlightMedia
+        ? `product/highlight_media/${highlightMedia.filename}`
+        : product.highlight_media;
       product.product_images = updatedProductImages;
       product.product_text_color =
         req.body.product_text_color || product.product_text_color;
@@ -405,14 +491,14 @@ const updateProduct = async (req, res) => {
       await product.save();
 
       res.status(200).json({
-        success:true,
+        success: true,
         message: "Product updated successfully",
         data: product,
       });
     } catch (error) {
       console.error("Error updating product:", error);
       res.status(500).json({
-        success:false,
+        success: false,
         message: "Error updating product",
         error: error.message,
       });
@@ -425,14 +511,14 @@ const getAllProducts = async (req, res) => {
     const products = await ProductDataModel.find({}).lean();
 
     res.status(200).json({
-      success:true,
+      success: true,
       message: "Products retrieved successfully",
       data: products,
     });
   } catch (error) {
     console.error("Error retrieving products:", error);
     res.status(500).json({
-      success:false,
+      success: false,
       message: "Error retrieving products",
       error: error.message,
     });
@@ -444,12 +530,16 @@ const deleteProduct = async (req, res) => {
     const { productId } = req.body;
 
     if (!productId) {
-      return res.status(400).json({ success:false, message: "ProductId is required" });
+      return res
+        .status(400)
+        .json({ success: false, message: "ProductId is required" });
     }
 
     const product = await ProductDataModel.findById(productId);
     if (!product) {
-      return res.status(404).json({success:false, message: "Product not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found" });
     }
 
     product.isDeleted = !product.isDeleted;
@@ -457,7 +547,7 @@ const deleteProduct = async (req, res) => {
     await product.save();
 
     res.status(200).json({
-      success:true,
+      success: true,
       message: "Product isDeleted status updated successfully",
       data: {
         _id: product._id,
@@ -467,7 +557,7 @@ const deleteProduct = async (req, res) => {
   } catch (error) {
     console.error("Error toggling product isDeleted:", error);
     res.status(500).json({
-      success:false,
+      success: false,
       message: "Error toggling product isDeleted",
       error: error.message,
     });
@@ -511,7 +601,7 @@ const addProductsHomepage = async (req, res) => {
 
     if (homePage) {
       return res.status(400).json({
-        success:false,
+        success: false,
         message: "Cannot add products structure again, instead update it",
       });
     }
@@ -528,14 +618,14 @@ const addProductsHomepage = async (req, res) => {
     await newHomePage.save();
 
     res.status(201).json({
-      success:true,
+      success: true,
       message: "products data added successfully",
       data: newHomePage.content.products,
     });
   } catch (error) {
     console.error("Error adding products data:", error);
     res.status(500).json({
-      success:false,
+      success: false,
       message: "Error adding products data",
       error: error.message,
     });
@@ -562,7 +652,9 @@ const updateHomepageProducts = async (req, res) => {
       structure_type: "products",
     });
     if (!homePage) {
-      return res.status(404).json({success:false, message: "Products section not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Products section not found" });
     }
 
     if (transformedData !== undefined) {
@@ -574,14 +666,14 @@ const updateHomepageProducts = async (req, res) => {
     await homePage.save();
 
     res.status(200).json({
-      success:true,
+      success: true,
       message: "Products data updated successfully",
       data: homePage.content.products,
     });
   } catch (error) {
     console.error("Error updating products data:", error);
     res.status(500).json({
-      success:false,
+      success: false,
       message: "Error updating products data",
       error: error.message,
     });
@@ -593,14 +685,18 @@ const productsVisibility = async (req, res) => {
     const { productId } = req.body;
 
     if (!productId) {
-      return res.status(400).json({success:false, message: "ProductId is required" });
+      return res
+        .status(400)
+        .json({ success: false, message: "ProductId is required" });
     }
 
     const homePage = await HomePageDataModel.findOne({
       structure_type: "products",
     });
     if (!homePage) {
-      return res.status(404).json({success:false, message: "products section not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "products section not found" });
     }
 
     const itemIndex = homePage.content.products.data.findIndex(
@@ -608,7 +704,9 @@ const productsVisibility = async (req, res) => {
     );
 
     if (itemIndex < 0) {
-      return res.status(404).json({success:false, message: "Products item not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Products item not found" });
     }
 
     homePage.content.products.data[itemIndex].isHidden =
@@ -617,14 +715,14 @@ const productsVisibility = async (req, res) => {
     await homePage.save();
 
     res.status(200).json({
-      success:true,
+      success: true,
       message: "Products visibility updated successfully",
       data: homePage.content.products.data[itemIndex],
     });
   } catch (error) {
     console.error("Error updating products visibility:", error);
     res.status(500).json({
-      success:false,
+      success: false,
       message: "Error updating products visibility",
       error: error.message,
     });
@@ -637,14 +735,16 @@ const getAllHomepageProducts = async (req, res) => {
       structure_type: "products",
     });
     if (!homePage || !homePage.content.products) {
-      return res.status(404).json({success:false, message: "Products section not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Products section not found" });
     }
 
     const productIds = homePage.content.products.data.map((item) => item.id);
 
     if (productIds.length === 0) {
       return res.status(200).json({
-        structure: "banner",
+        structure: "products",
         data: [],
         title: homePage.content.products.section_title,
       });
@@ -652,13 +752,14 @@ const getAllHomepageProducts = async (req, res) => {
 
     const products = await ProductDataModel.find({
       _id: { $in: productIds },
-    }).select("highlight_media description title product_text_color");
+    }).select("highlight_media description title product_text_color _id");
 
     const data = homePage.content.products.data
       .map((item) => {
         const product = products.find((p) => p._id.toString() === item.id);
         return product
           ? {
+              _id: product._id,
               higlight_media: product.highlight_media,
               description: product.description,
               title: product.title,
@@ -670,7 +771,7 @@ const getAllHomepageProducts = async (req, res) => {
       .filter((item) => item !== null);
 
     res.status(200).json({
-      success:true,
+      success: true,
       structure: "products",
       data,
       title: homePage.content.products.section_title,
@@ -678,7 +779,7 @@ const getAllHomepageProducts = async (req, res) => {
   } catch (error) {
     console.error("Error retrieving all products data:", error);
     res.status(500).json({
-      success:false,
+      success: false,
       message: "Error retrieving all products data",
       error: error.message,
     });

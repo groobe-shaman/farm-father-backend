@@ -38,6 +38,7 @@ const ProductSchema = new mongoose.Schema(
         cta_button_link: { type: String },
       },
     ],
+    features_icon:{type:String,required:true},
     main_image: { type: String, required: true },
     highlight_media: { type: String, required: true },
     product_images: [{ type: String, required: true }],
