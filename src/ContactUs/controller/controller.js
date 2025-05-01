@@ -55,7 +55,7 @@ const addContactUs = async (req, res) => {
     });
 
     await addData.save();
-    // await sendContactUsEmail(email_id, name);
+    await sendContactUsEmail(email_id, name);
 
     return res.status(200).json({
       success: true,
