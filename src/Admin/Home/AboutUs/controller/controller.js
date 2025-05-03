@@ -182,6 +182,7 @@ const updateAboutUs = async (req, res) => {
             ? `home/aboutus_images/${file.filename}`
             : existing.icon || "",
           link: link || existing.link || "",
+          isHidden:existing.isHidden
         };
       });
 

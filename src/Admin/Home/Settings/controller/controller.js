@@ -45,7 +45,6 @@ const addSettings = async (req, res) => {
     }
 
     try {
-
       const companyMobileNumber = req.body.company_mobile_number || "";
       const companyEmailId = req.body.company_email_id || "";
       const companyAddress = req.body.company_address || "";
@@ -93,7 +92,7 @@ const addSettings = async (req, res) => {
       });
       if (existingSettings) {
         return res.status(400).json({
-          success:false,
+          success: false,
           message: "Settings section already exists. Please update it instead.",
         });
       }
@@ -115,7 +114,7 @@ const addSettings = async (req, res) => {
       await newSettings.save();
 
       res.status(201).json({
-        success:true,
+        success: true,
         message: "Settings data added successfully",
         data: {
           structure: "settings",
@@ -126,7 +125,7 @@ const addSettings = async (req, res) => {
     } catch (error) {
       console.error("Error adding Settings data:", error);
       res.status(500).json({
-        success:false,
+        success: false,
         message: "Error adding Settings data",
         error: error.message,
       });
@@ -155,7 +154,9 @@ const updateSettings = async (req, res) => {
       });
 
       if (!settings) {
-        return res.status(404).json({ success:false,message: "Settings section not found" });
+        return res
+          .status(404)
+          .json({ success: false, message: "Settings section not found" });
       }
 
       const updatedLinks = platforms.map((platform) => {
@@ -173,6 +174,7 @@ const updateSettings = async (req, res) => {
             ? `home/settings_icons/${file.filename}`
             : existing.icon || "",
           link: link || existing.link || "",
+          isHidden:existing.isHidden,
         };
       });
 
@@ -186,18 +188,17 @@ const updateSettings = async (req, res) => {
       settings.content.settings.company_details.company_address =
         req.body.company_address ||
         settings.content.settings.company_details.company_address;
-     
       await settings.save();
 
       res.status(200).json({
-        success:true,
+        success: true,
         message: "Settings data updated successfully",
         data: settings.content.settings,
       });
     } catch (error) {
       console.error("Error updating Settings data:", error);
       res.status(500).json({
-        success:false,
+        success: false,
         message: "Error updating Settings data",
         error: error.message,
       });
@@ -206,82 +207,85 @@ const updateSettings = async (req, res) => {
 };
 
 const getSettings = async (req, res) => {
-    try {
-      const settings = await HomePageDataModel.findOne({ structure_type: "settings" });
-  
-      if (!settings || !settings.content.settings) {
-        return res.status(404).json({success:false, message: "Settings section not found" });
-      }
-  
-      res.status(200).json({
-        success:true,
-        data: settings.content.settings,
-      });
-    } catch (error) {
-      console.error("Error fetching Settings data:", error);
-      res.status(500).json({
-        success:false,
-        message: "Error fetching Settings data",
-        error: error.message,
-      });
-    }
-  };
+  try {
+    const settings = await HomePageDataModel.findOne({
+      structure_type: "settings",
+    });
 
-  
-  const toggleSocialMediaVisibility = async (req, res) => {
-    const { platform } = req.body;
-  
-    if (!platform) {
-      return res.status(400).json({
+    if (!settings || !settings.content.settings) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Settings section not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: settings.content.settings,
+    });
+  } catch (error) {
+    console.error("Error fetching Settings data:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching Settings data",
+      error: error.message,
+    });
+  }
+};
+
+const toggleSocialMediaVisibility = async (req, res) => {
+  const { platform } = req.body;
+
+  if (!platform) {
+    return res.status(400).json({
+      success: false,
+      message: "Platform is required",
+    });
+  }
+
+  try {
+    const settingsDoc = await HomePageDataModel.findOne({
+      structure_type: "settings",
+    });
+
+    if (!settingsDoc) {
+      return res.status(404).json({
         success: false,
-        message: "Platform is required",
+        message: "Settings section not found",
       });
     }
-  
-    try {
-      const settingsDoc = await HomePageDataModel.findOne({
-        structure_type: "settings",
-      });
-  
-      if (!settingsDoc) {
-        return res.status(404).json({
-          success: false,
-          message: "Settings section not found",
-        });
-      }
-  
-      const link = settingsDoc.content.settings.social_media_links.find(
-        (item) => item.platform === platform
-      );
-  
-      if (!link) {
-        return res.status(404).json({
-          success: false,
-          message: `No social media link found for platform: ${platform}`,
-        });
-      }
-  
-      link.isHidden = !link.isHidden;
-  
-      await settingsDoc.save();
-  
-      res.status(200).json({
-        success: true,
-        message: `Visibility for ${platform} updated successfully`,
-        data: link,
-      });
-    } catch (error) {
-      console.error("Error toggling social media visibility:", error);
-      res.status(500).json({
+
+    const link = settingsDoc.content.settings.social_media_links.find(
+      (item) => item.platform === platform
+    );
+
+    if (!link) {
+      return res.status(404).json({
         success: false,
-        message: "Internal server error",
-        error: error.message,
+        message: `No social media link found for platform: ${platform}`,
       });
     }
-  };
+
+    link.isHidden = !link.isHidden;
+
+    await settingsDoc.save();
+
+    res.status(200).json({
+      success: true,
+      message: `Visibility for ${platform} updated successfully`,
+      data: link,
+    });
+  } catch (error) {
+    console.error("Error toggling social media visibility:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
 module.exports = {
   addSettings,
   updateSettings,
   getSettings,
-  toggleSocialMediaVisibility
+  toggleSocialMediaVisibility,
 };
