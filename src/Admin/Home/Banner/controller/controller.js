@@ -143,15 +143,18 @@ const getAllHomepageBanners = async (req, res) => {
     const homePage = await HomePageDataModel.findOne({
       structure_type: "banner",
     });
+
     if (!homePage || !homePage.content.banner) {
-      return res.status(404).json({success:false, message: "Banner section not found" });
+      return res.status(404).json({ success: false, message: "Banner section not found" });
     }
 
-    const bannerIds = homePage.content.banner.data.map((item) => item.id);
+    const bannerData = homePage.content.banner.data;
+
+    const bannerIds = bannerData.map((item) => item.id);
 
     if (bannerIds.length === 0) {
       return res.status(200).json({
-        success:true,
+        success: true,
         structure: "banner",
         data: [],
         title: homePage.content.banner.title,
@@ -161,24 +164,42 @@ const getAllHomepageBanners = async (req, res) => {
 
     const banners = await BannerDataModel.find({
       _id: { $in: bannerIds },
-    })
-    const sortedBanners = banners.sort(
+    });
+
+    const isHiddenMap = {};
+    bannerData.forEach(item => {
+      isHiddenMap[item.id.toString()] = item.isHidden || false;
+    });
+
+    const bannersWithVisibility = banners.map(banner => {
+      return {
+        ...banner.toObject(),
+        isHidden: isHiddenMap[banner._id.toString()] || false,
+      };
+    });
+
+    const sortedBanners = bannersWithVisibility.sort(
       (a, b) => (a.sort_id || 0) - (b.sort_id || 0)
     );
+
     res.status(200).json({
-      success:true,
+      success: true,
       structure: "banner",
-      data:sortedBanners
+      title: homePage.content.banner.title,
+      description: homePage.content.banner.description,
+      data: sortedBanners,
     });
+
   } catch (error) {
     console.error("Error retrieving all banner data:", error);
     res.status(500).json({
-      success:false,
+      success: false,
       message: "Error retrieving all banner data",
       error: error.message,
     });
   }
 };
+
 module.exports = {
   addBannerHomepage,
   updateHomepageBanner,
