@@ -209,6 +209,10 @@ const addProduct = async (req, res) => {
         return res
           .status(400)
           .json({ success: false, message: "Text color is required" });
+      } else if (!req.body.homepage_title_color) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Home page title color  is required" });
       }
 
       const thumbnailDir = path.join(
@@ -265,6 +269,7 @@ const addProduct = async (req, res) => {
         product_images: productImages,
         thumbnail_images: thumbnailImages,
         product_text_color: req.body.product_text_color,
+        homepage_title_color: req.body.homepage_title_color,
       };
 
       const product = new ProductDataModel(productData);
@@ -487,6 +492,8 @@ const updateProduct = async (req, res) => {
       product.product_images = updatedProductImages;
       product.product_text_color =
         req.body.product_text_color || product.product_text_color;
+      product.homepage_title_color =
+        req.body.homepage_title_color || product.homepage_title_color;
 
       await product.save();
 
@@ -752,7 +759,7 @@ const getAllHomepageProducts = async (req, res) => {
 
     const products = await ProductDataModel.find({
       _id: { $in: productIds },
-    }).select("highlight_media description title product_text_color _id");
+    }).select("highlight_media description title homepage_title_color _id");
 
     const data = homePage.content.products.data
       .map((item) => {
@@ -763,7 +770,7 @@ const getAllHomepageProducts = async (req, res) => {
               higlight_media: product.highlight_media,
               description: product.description,
               title: product.title,
-              product_text_color: product.product_text_color,
+              homepage_title_color: product.homepage_title_color,
               isHidden: item.isHidden,
             }
           : null;
