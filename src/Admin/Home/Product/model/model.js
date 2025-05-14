@@ -44,6 +44,7 @@ const ProductSchema = new mongoose.Schema(
     product_images: [{ type: String, required: true }],
     thumbnail_images: [{ type: String, required: true }],
     product_text_color: { type: String, required: true },
+    homepage_title_color:{ type: String},
     isDeleted: { type: Boolean, default: false },
   },
   { timestamps: true }
